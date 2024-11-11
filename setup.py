@@ -1,45 +1,52 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-
-with open("requirements.txt", "r", encoding="utf-8") as fh:
-    requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
-
 setup(
     name="uripoint",
-    version="0.0.1",
-    author="Tom Sapletta",
-    author_email="info@softreck.dev",
-    description="A flexible URI point generator",
-    long_description=long_description,
+    version="0.2.0",
+    description="A Python library for video processing and endpoint management",
+    long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/uripoint-com/python",
-    packages=find_packages(exclude=["tests*"]),
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: Developers",
-        "Topic :: Multimedia :: Video",
-        "Topic :: System :: Systems Administration",
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Operating System :: POSIX :: Linux",
+    author="Project Maintainer",
+    author_email="maintainer@uripoint.com",
+    url="https://github.com/yourusername/uripoint",
+    packages=find_packages(exclude=['tests*']),
+    install_requires=[
+        'pyyaml>=6.0',
+        'python-dotenv>=0.19.0',
+        'ffmpeg-python>=0.2.0',
+        'typing-extensions>=4.0.0',
+        'colorlog>=6.7.0',
+        'click>=8.0.0',
+        'prometheus_client>=0.19.0',
+        'fastapi>=0.104.1',
+        'uvicorn>=0.24.0',
+        'docker>=6.0.0',
+        'requests>=2.28.0'
     ],
-    python_requires=">=3.8",
-    install_requires=requirements,
-    include_package_data=True,
-    package_data={
-        "uripoint": [
-            "config/*.json",
-        ],
+    extras_require={
+        'dev': [
+            'pytest>=7.0.0',
+            'pytest-cov>=4.0.0',
+            'black>=23.0.0',
+            'mypy>=1.0.0',
+            'flake8>=6.0.0',
+            'isort>=5.12.0',
+            'coverage>=7.2.0'
+        ]
     },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        "License :: OSI Approved :: Apache Software License",
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+    ],
+    python_requires='>=3.7',
     entry_points={
-        "console_scripts": [
-            "uripoint=uripoint.main:main",
+        'console_scripts': [
+            'uripoint=uripoint.main:main',
         ],
     },
 )

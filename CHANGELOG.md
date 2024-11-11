@@ -1,16 +1,16 @@
 # Changelog
 
-## [Unreleased]
+## [0.2.0] - Comprehensive Testing and Documentation Update
 ### Added
-- Comprehensive requirements for production and development
-- Docker support
-- FastAPI and Uvicorn for web services
-- Enhanced logging with colorlog
-- Prometheus metrics integration
-- FFmpeg video processing support
+- Extensive testing documentation in TEST.md
+- Detailed test scenarios for video processing
+- Docker integration test guidelines
+- Performance and security testing sections
+- CI/CD configuration example
 
 ### Changed
-- Updated project dependencies
+- Updated project configuration files
+- Enhanced requirements management
 - Improved development tooling
 
 ## [0.1.0] - Initial Release
@@ -24,3 +24,4 @@
 - Enhance Docker container management
 - Develop more robust endpoint running mechanisms
 - Create comprehensive web interface
+- Expand test coverage

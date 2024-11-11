@@ -1,4 +1,4 @@
-# Testowanie Stream Filter Router
+# Testowanie UriPoint
 
 ## Testy jednostkowe
 
@@ -11,39 +11,39 @@ pip install -r requirements-dev.txt
 pytest
 
 # Uruchomienie testów z pokryciem kodu
-pytest --cov=.
+pytest --cov=uripoint
 
 # Uruchomienie konkretnego testu
-pytest tests/test_router.py
+pytest tests/test_video_processing.py
 ```
 
 ## Struktura testów
 
 ```
 tests/
-├── test_router.py
-├── test_match_filter.py
-├── test_get_url_parts.py
-├── test_extract_query_params.py
-└── test_convert_file_path.py
+├── test_video_processing.py
+├── test_docker_integration.py
+├── test_endpoint_management.py
+├── test_uri_parsing.py
+└── test_stream_handling.py
 ```
 
 ## Przypadki testowe
 
-### Router
-- Poprawne przekierowanie strumienia
-- Obsługa błędów połączenia
-- Walidacja konfiguracji
+### Przetwarzanie wideo
+- Walidacja plików wideo
+- Obsługa różnych formatów
+- Przetwarzanie strumieni
 
-### Filtry
-- Dopasowanie wzorców URL
-- Przetwarzanie parametrów
-- Obsługa różnych protokołów
+### Integracja Docker
+- Uruchamianie kontenerów
+- Zarządzanie zasobami
+- Obsługa błędów
 
-### Parsowanie URL
-- Poprawne części URL
-- Obsługa specjalnych znaków
-- Walidacja protokołów
+### Zarządzanie endpointami
+- Routing
+- Bezpieczeństwo
+- Wydajność
 
 ## Testy integracyjne
 
@@ -57,18 +57,18 @@ docker compose ps
 ```
 
 ### Scenariusze testowe
-1. Pełny przepływ RTSP -> HLS
-2. Monitoring i metryki
-3. Obsługa wielu strumieni
-4. Restart i odzyskiwanie
+1. Przetwarzanie wideo w Docker
+2. Uruchamianie endpointów
+3. Monitorowanie zasobów
+4. Obsługa wielu strumieni
 
 ## Testy wydajnościowe
 
 ### Metryki
 - Wykorzystanie CPU
 - Wykorzystanie pamięci
-- Opóźnienie strumienia
-- Przepustowość sieci
+- Czas przetwarzania wideo
+- Przepustowość strumieni
 
 ### Narzędzia
 ```bash
@@ -76,14 +76,14 @@ docker compose ps
 docker stats
 
 # Testy obciążeniowe
-ab -n 1000 -c 10 http://localhost:8080/stream.m3u8
+python -m performance_tests
 ```
 
 ## Testy bezpieczeństwa
 
 ### Obszary testów
 1. Walidacja wejścia
-2. Uprawnienia dostępu
+2. Kontrola dostępu
 3. Bezpieczeństwo sieci
 4. Obsługa błędów
 
@@ -91,19 +91,6 @@ ab -n 1000 -c 10 http://localhost:8080/stream.m3u8
 - OWASP ZAP
 - Nmap
 - Wireshark
-
-## Testy end-to-end
-
-### Scenariusze
-1. Konfiguracja -> uruchomienie -> streaming -> monitoring
-2. Obsługa awarii -> restart -> odzyskiwanie
-3. Skalowanie -> wiele strumieni -> wydajność
-
-### Weryfikacja
-- Jakość strumienia
-- Stabilność systemu
-- Poprawność metryk
-- Logi systemowe
 
 ## Continuous Integration
 
