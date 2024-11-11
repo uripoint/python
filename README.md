@@ -1,5 +1,28 @@
 # UriPoint
 
+## Architecture Overview
+
+```ascii
+┌─────────────────────────────────────────────────────────────┐
+│                      UriPoint System                        │
+├──────────────────┬───────────────────┬──────────────────────┤
+│   CLI Interface  │ Protocol Handlers │   Endpoint Manager   │
+├──────────────────┴───────────────────┴──────────────────────┤
+│                                                             │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
+│  │   HTTP(S)   │   │    MQTT     │   │    RTSP     │        │
+│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │        │
+│  └─────────────┘   └─────────────┘   └─────────────┘        │
+│                                                             │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
+│  │   Redis     │   │    SMTP     │   │    AMQP     │        │
+│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │        │
+│  └─────────────┘   └─────────────┘   └─────────────┘        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+
 ## Overview
 
 UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols. It provides a unified interface for handling various communication protocols, including streaming protocols (RTSP, HLS, DASH) and IoT protocols (MQTT).
@@ -28,6 +51,28 @@ UriPoint provides a robust CLI for creating and managing endpoints that persist 
    - HTTP method validation
    - CORS support
 
+
+## Protocol Support
+
+```ascii
+┌─────────────────────────┐  ┌─────────────────────────┐
+│     Web Protocols       │  │    Streaming Protocols  │
+├─────────────────────────┤  ├─────────────────────────┤
+│ - HTTP/HTTPS            │  │ - RTSP                  │
+│ - WebSocket (WS/WSS)    │  │ - HLS                   │
+│ - GraphQL               │  │ - DASH                  │
+└─────────────────────────┘  └─────────────────────────┘
+
+┌─────────────────────────┐  ┌─────────────────────────┐
+│    Storage Protocols    │  │   Messaging Protocols   │
+├─────────────────────────┤  ├─────────────────────────┤
+│ - Redis                 │  │ - MQTT                  │
+│ - FTP/SFTP              │  │ - AMQP                  │
+│ - File System           │  │ - SMTP                  │
+└─────────────────────────┘  └─────────────────────────┘
+```
+
+
 ## Installation
 
 ```bash
@@ -35,6 +80,42 @@ pip install uripoint
 ```
 
 ## CLI Usage
+
+
+Development Flow
+
+```ascii
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Create    │     │   Configure │     │    Serve    │
+│  Endpoint   │ ──► │   Protocol  │ ──► │  Endpoint   │
+└─────────────┘     └─────────────┘     └─────────────┘
+       │                                       │
+       │                                       │
+       ▼                                       ▼
+┌─────────────┐                         ┌─────────────┐
+│    Test     │ ◄─────────────────────  │   Monitor   │
+│  Endpoint   │                         │   Status    │
+└─────────────┘                         └─────────────┘
+```
+
+## Command Structure
+
+```bash
+uripoint [options] <command>
+```
+```bash
+┌────────────────────────────────────────────────────┐
+│ Commands:                                          │
+├────────────────────────────────────────────────────┤
+│ --uri      Define endpoint URI                     │
+│ --method   Specify HTTP methods                    │
+│ --data     Configure endpoint data                 │
+│ --serve    Start serving endpoints                 │
+│ --list     Show configured endpoints               │
+│ --detach   Remove endpoints                        │
+└────────────────────────────────────────────────────┘
+```
+
 
 ### Endpoint Creation Methods
 
@@ -246,3 +327,4 @@ This project is licensed under the terms of the LICENSE file in the project root
 
 ## Changelog
 See [CHANGELOG.md](CHANGELOG.md) for version history and updates.
+

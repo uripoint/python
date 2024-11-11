@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.4.0] - ASCII Documentation and Examples Enhancement
+### Added
+- ASCII schema diagrams in README
+- Comprehensive protocol examples
+- Demo script for all protocols
+- Detailed WHY.md documentation
+
+### Implemented
+- System architecture visualization
+- Protocol support diagrams
+- Development flow charts
+- Command structure documentation
+
+### Improvements
+- Enhanced documentation clarity
+- Better visual representation
+- More practical examples
+- Clearer usage patterns
+
 ## [1.3.0] - Streaming and IoT Protocol Support
 ### Added
 - Streaming protocol support:

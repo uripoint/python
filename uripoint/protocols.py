@@ -16,6 +16,8 @@ class ProtocolHandler(ABC):
 
     def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
         """Handle incoming request for the endpoint"""
+        if not endpoint_info or 'config' not in endpoint_info:
+            raise KeyError("Invalid endpoint info: missing configuration")
         return json.dumps(endpoint_info.get('config', {}).get('response', {}))
 
 class HTTPHandler(ProtocolHandler):
@@ -49,6 +51,8 @@ class RTSPHandler(ProtocolHandler):
         return True
 
     def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        if not endpoint_info or 'config' not in endpoint_info:
+            raise KeyError("Invalid endpoint info: missing configuration")
         config = endpoint_info.get('config', {})
         return json.dumps({
             'stream_url': config.get('stream_url'),
@@ -69,6 +73,8 @@ class HLSHandler(ProtocolHandler):
         return True
 
     def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        if not endpoint_info or 'config' not in endpoint_info:
+            raise KeyError("Invalid endpoint info: missing configuration")
         config = endpoint_info.get('config', {})
         return json.dumps({
             'manifest_url': config.get('manifest_url'),
@@ -89,6 +95,8 @@ class DASHHandler(ProtocolHandler):
         return True
 
     def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        if not endpoint_info or 'config' not in endpoint_info:
+            raise KeyError("Invalid endpoint info: missing configuration")
         config = endpoint_info.get('config', {})
         return json.dumps({
             'mpd_url': config.get('mpd_url'),
@@ -103,13 +111,26 @@ class MQTTHandler(ProtocolHandler):
             return False
         
         # Validate QoS level (0, 1, or 2)
-        return config['qos'] in [0, 1, 2]
+        qos = config['qos']
+        if not isinstance(qos, int) or qos not in [0, 1, 2]:
+            raise ValueError(f"Invalid QoS level: {qos}. Must be 0, 1, or 2.")
+        
+        return True
 
     def connect(self) -> bool:
         return True
 
     def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        if not endpoint_info or 'config' not in endpoint_info:
+            raise KeyError("Invalid endpoint info: missing configuration")
         config = endpoint_info.get('config', {})
+        
+        # Validate QoS if present
+        if 'qos' in config:
+            qos = config['qos']
+            if not isinstance(qos, int) or qos not in [0, 1, 2]:
+                raise ValueError(f"Invalid QoS level: {qos}. Must be 0, 1, or 2.")
+        
         return json.dumps({
             'topic': config.get('topic'),
             'qos': config.get('qos'),
