@@ -79,7 +79,7 @@ pip install uripoint
 ## Usage
 
 
-Development Flow
+Service Life Cycle
 
 ```ascii
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -95,15 +95,15 @@ Development Flow
 └─────────────┘                         └─────────────┘
 ```
 
-## Command Structure
+## Command
 
 ```bash
 uripoint [options] <command>
 ```
+
+Command
 ```bash
 ┌────────────────────────────────────────────────────┐
-│ Commands:                                          │
-├────────────────────────────────────────────────────┤
 │ --uri      Define endpoint URI                     │
 │ --method   Specify HTTP methods                    │
 │ --data     Configure endpoint data                 │
