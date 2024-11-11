@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="uripoint",
-    version="0.2.0",
+    version="0.4.0",
     description="A Python library for video processing and endpoint management",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
@@ -13,7 +13,7 @@ setup(
     install_requires=[
         'pyyaml>=6.0',
         'python-dotenv>=0.19.0',
-        'ffmpeg-python>=0.2.0',
+        'ffmpeg-python>=0.4.0',
         'typing-extensions>=4.0.0',
         'colorlog>=6.7.0',
         'click>=8.0.0',
