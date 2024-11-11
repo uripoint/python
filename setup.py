@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="uripoint",
-    version="0.5.0",
+    version="1.0.0",
     description="A flexible Python library for endpoint management and URI processing",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
@@ -35,7 +35,7 @@ setup(
         ]
     },
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         "License :: OSI Approved :: Apache Software License",
         'Programming Language :: Python :: 3.7',

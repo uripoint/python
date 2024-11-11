@@ -4,13 +4,21 @@
 
 UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols.
 
-## Features
+## Key Features
 
-### Endpoint Management
-- Create endpoints using full URI or component-based approach
-- Support for multiple protocols (HTTP, HTTPS, WebSocket, FTP, etc.)
-- Persistent endpoint configuration
-- Easy endpoint listing and serving
+### Persistent Endpoint Management
+UriPoint provides a robust CLI for creating and managing endpoints that persist across sessions.
+
+#### How It Works
+1. **Configuration Storage**
+   - Endpoints are stored in `~/.uripoint_config.yaml`
+   - Automatically saves and loads endpoint configurations
+   - Maintains state between CLI sessions
+
+2. **Endpoint Creation**
+   - Supports multiple creation methods
+   - Prevents duplicate endpoint registration
+   - Stores endpoint details with associated metadata
 
 ## Installation
 
@@ -20,7 +28,7 @@ pip install uripoint
 
 ## CLI Usage
 
-### Creating Endpoints
+### Endpoint Creation Methods
 
 1. Full URI Approach
 ```bash
@@ -31,10 +39,10 @@ uripoint --uri http://localhost:8080/api/status --data '{"status": "OK"}'
 2. Component-Based Approach
 ```bash
 # Create an endpoint using individual components
-uripoint --hostname localhost --path /api/status --protocol http --port 8000 --data '{"status": "OK"}'
+uripoint --hostname localhost --path /api/status --protocol http --port 8001 --data '{"status": "OK"}'
 ```
 
-### Managing Endpoints
+### Endpoint Management
 
 ```bash
 # List all configured endpoints
@@ -42,27 +50,43 @@ uripoint --list
 
 # Serve all configured endpoints
 uripoint --serve
+
+uripoint --test
 ```
 
-## Example Scenarios
+### Persistent Configuration
 
-### HTTP Endpoint
+#### How Configuration Works
+- Endpoints are saved in `~/.uripoint_config.yaml`
+- Each endpoint includes:
+  - Protocol
+  - Hostname
+  - Path
+  - Port
+  - Optional metadata
+
+#### Example Workflow
 ```bash
-# Create a simple HTTP status endpoint
-uripoint --uri http://localhost:8000/health --data '{"status": "healthy"}'
+# Create first endpoint
+uripoint --hostname localhost --path /api/users --port 8001
+
+# Create second endpoint
+uripoint --hostname localhost --path /api/products --port 8002
+
+# List all endpoints (persists between sessions)
+uripoint --list
+
+# Serve all endpoints
+uripoint --serve
 ```
 
-### WebSocket Endpoint
-```bash
-# Create a WebSocket endpoint
-uripoint --protocol ws --hostname localhost --path /socket --port 8765 --data '{"type": "websocket"}'
-```
-
-### FTP Endpoint
-```bash
-# Create an FTP endpoint
-uripoint --protocol ftp --hostname ftp.example.com --path /files --port 21 --data '{"directory": "/public"}'
-```
+## Supported Protocols
+- HTTP
+- HTTPS
+- WebSocket (WS)
+- WebSocket Secure (WSS)
+- FTP
+- SFTP
 
 ## Programmatic Usage
 
@@ -85,13 +109,10 @@ cli.list_endpoints()
 cli.serve()
 ```
 
-## Supported Protocols
-- HTTP
-- HTTPS
-- WebSocket (WS)
-- WebSocket Secure (WSS)
-- FTP
-- SFTP
+## Configuration File Location
+- **Path**: `~/.uripoint_config.yaml`
+- **Format**: YAML
+- **Contents**: List of endpoint configurations
 
 ## Contributing
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md)
