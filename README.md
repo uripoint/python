@@ -2,12 +2,21 @@
 
 ## Overview
 
-UriPoint is a Python library for processing video-related functionality.
+UriPoint is a comprehensive Python library for creating and managing endpoints across multiple protocols. It provides a flexible and powerful solution for setting up various network services with ease.
 
 ## Features
 
-- Video processing utilities
-- [Placeholder for specific video-related features]
+### Supported Protocols
+- HTTP
+- FTP
+- RTSP (Real Time Streaming Protocol)
+- MQTT (Message Queuing Telemetry Transport)
+- WebSocket
+- TCP
+- UDP
+- SMTP
+- POP3
+- SFTP
 
 ## Installation
 
@@ -17,18 +26,52 @@ pip install uripoint
 
 ## Quick Start
 
-```python
-from uripoint import process_video
+### Creating Endpoints
 
-# Example usage (to be updated with actual library functionality)
-video_path = "path/to/your/video.mp4"
-processed_video = process_video(video_path)
+1. HTTP Endpoint
+```bash
+python uripoint.py --uri /api/status --protocol http --port 8000 --data '{"status": "OK"}'
 ```
+
+2. FTP Server
+```bash
+python uripoint.py --uri /files --protocol ftp --port 2121 --data '{"directory": "./files"}'
+```
+
+3. RTSP Stream
+```bash
+python uripoint.py --uri /stream --protocol rtsp --port 8554 --data '{"stream_name": "test"}'
+```
+
+4. MQTT Broker
+```bash
+python uripoint.py --uri /mqtt --protocol mqtt --port 1883 --data '{"topics": ["test/#"]}'
+```
+
+### Additional Commands
+
+- Run all servers:
+```bash
+python uripoint.py --serve
+```
+
+- List all endpoints:
+```bash
+python uripoint.py --list
+```
+
+## Key Capabilities
+
+- Dynamic endpoint creation
+- Multi-protocol support
+- Persistent configuration (YAML-based)
+- Flexible data handling
+- Easy configuration and management
 
 ## Requirements
 
 - Python 3.7+
-- [List any additional dependencies]
+- See `requirements.txt` for full dependencies
 
 ## Testing
 
@@ -46,62 +89,28 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for deta
 
 This project is licensed under the terms of the LICENSE file in the project root.
 
+## Advanced Usage
 
+Each endpoint is highly configurable and can handle various data types. The configuration is saved to a YAML file, ensuring endpoints persist between runs.
 
-Teraz możesz tworzyć endpointy dla różnych protokołów. Oto przykłady użycia:
+## Example Python Usage
 
-1. Tworzenie endpointu HTTP:
-```bash
-python uripoint.py --uri /api/status --protocol http --port 8000 --data '{"status": "OK"}'
+```python
+from uripoint import create_endpoint
+
+# Create an HTTP endpoint
+endpoint = create_endpoint(
+    uri='/api/example',
+    protocol='http',
+    port=8000,
+    data={'key': 'value'}
+)
+endpoint.start()
 ```
 
-2. Tworzenie serwera FTP:
-```bash
-python uripoint.py --uri /files --protocol ftp --port 2121 --data '{"directory": "./files"}'
-```
+## Future Roadmap
 
-3. Tworzenie endpointu RTSP:
-```bash
-python uripoint.py --uri /stream --protocol rtsp --port 8554 --data '{"stream_name": "test"}'
-```
-
-4. Tworzenie brokera MQTT:
-```bash
-python uripoint.py --uri /mqtt --protocol mqtt --port 1883 --data '{"topics": ["test/#"]}'
-```
-
-5. Tworzenie endpointu WebSocket:
-```bash
-python uripoint.py --uri /ws --protocol ws --port 8765 --data '{"message": "Hello WebSocket!"}'
-```
-
-6. Tworzenie serwera TCP:
-```bash
-python uripoint.py --uri /tcp --protocol tcp --port 9000 --data '{"message": "Hello TCP!"}'
-```
-
-7. Uruchomienie wszystkich serwerów:
-```bash
-python uripoint.py --serve
-```
-
-8. Lista wszystkich endpointów:
-```bash
-python uripoint.py --list
-```
-
-Wspierane protokoły:
-- HTTP
-- FTP
-- RTSP (Real Time Streaming Protocol)
-- MQTT (Message Queuing Telemetry Transport)
-- WebSocket
-- TCP
-- UDP
-- SMTP
-- POP3
-- SFTP
-
-Każdy endpoint jest konfigurowalny i może obsługiwać różne typy danych. Program zapisuje konfigurację do pliku YAML, więc endpointy są zachowywane między uruchomieniami.
-
-Czy chciałbyś zobaczyć przykład użycia konkretnego protokołu lub dodatkowe funkcje?
+- Enhanced protocol support
+- Advanced routing mechanisms
+- Improved security features
+- More comprehensive documentation

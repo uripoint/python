@@ -1,0 +1,5 @@
+- data:
+    status: OK
+  port: 8000
+  protocol: http
+  uri: /api/status
