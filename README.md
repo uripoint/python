@@ -2,21 +2,15 @@
 
 ## Overview
 
-UriPoint is a comprehensive Python library for creating and managing endpoints across multiple protocols. It provides a flexible and powerful solution for setting up various network services with ease.
+UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols.
 
 ## Features
 
-### Supported Protocols
-- HTTP
-- FTP
-- RTSP (Real Time Streaming Protocol)
-- MQTT (Message Queuing Telemetry Transport)
-- WebSocket
-- TCP
-- UDP
-- SMTP
-- POP3
-- SFTP
+### Endpoint Management
+- Create endpoints using full URI or component-based approach
+- Support for multiple protocols (HTTP, HTTPS, WebSocket, FTP, etc.)
+- Persistent endpoint configuration
+- Easy endpoint listing and serving
 
 ## Installation
 
@@ -24,93 +18,83 @@ UriPoint is a comprehensive Python library for creating and managing endpoints a
 pip install uripoint
 ```
 
-## Quick Start
+## CLI Usage
 
 ### Creating Endpoints
 
-1. HTTP Endpoint
+1. Full URI Approach
 ```bash
-python uripoint.py --uri /api/status --protocol http --port 8000 --data '{"status": "OK"}'
+# Create an endpoint with full URI
+uripoint --uri http://localhost:8080/api/status --data '{"status": "OK"}'
 ```
 
-2. FTP Server
+2. Component-Based Approach
 ```bash
-python uripoint.py --uri /files --protocol ftp --port 2121 --data '{"directory": "./files"}'
+# Create an endpoint using individual components
+uripoint --hostname localhost --path /api/status --protocol http --port 8000 --data '{"status": "OK"}'
 ```
 
-3. RTSP Stream
-```bash
-python uripoint.py --uri /stream --protocol rtsp --port 8554 --data '{"stream_name": "test"}'
-```
-
-4. MQTT Broker
-```bash
-python uripoint.py --uri /mqtt --protocol mqtt --port 1883 --data '{"topics": ["test/#"]}'
-```
-
-### Additional Commands
-
-- Run all servers:
-```bash
-python uripoint.py --serve
-```
-
-- List all endpoints:
-```bash
-python uripoint.py --list
-```
-
-## Key Capabilities
-
-- Dynamic endpoint creation
-- Multi-protocol support
-- Persistent configuration (YAML-based)
-- Flexible data handling
-- Easy configuration and management
-
-## Requirements
-
-- Python 3.7+
-- See `requirements.txt` for full dependencies
-
-## Testing
-
-To run tests:
+### Managing Endpoints
 
 ```bash
-python -m pytest
+# List all configured endpoints
+uripoint --list
+
+# Serve all configured endpoints
+uripoint --serve
 ```
 
-## Contributing
+## Example Scenarios
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
+### HTTP Endpoint
+```bash
+# Create a simple HTTP status endpoint
+uripoint --uri http://localhost:8000/health --data '{"status": "healthy"}'
+```
 
-## License
+### WebSocket Endpoint
+```bash
+# Create a WebSocket endpoint
+uripoint --protocol ws --hostname localhost --path /socket --port 8765 --data '{"type": "websocket"}'
+```
 
-This project is licensed under the terms of the LICENSE file in the project root.
+### FTP Endpoint
+```bash
+# Create an FTP endpoint
+uripoint --protocol ftp --hostname ftp.example.com --path /files --port 21 --data '{"directory": "/public"}'
+```
 
-## Advanced Usage
-
-Each endpoint is highly configurable and can handle various data types. The configuration is saved to a YAML file, ensuring endpoints persist between runs.
-
-## Example Python Usage
+## Programmatic Usage
 
 ```python
-from uripoint import create_endpoint
+from uripoint import UriPointCLI
 
-# Create an HTTP endpoint
-endpoint = create_endpoint(
-    uri='/api/example',
-    protocol='http',
-    port=8000,
-    data={'key': 'value'}
+# Create CLI instance
+cli = UriPointCLI()
+
+# Create an endpoint
+cli.create_endpoint(
+    uri='http://localhost:8000/api/status',
+    data='{"status": "OK"}'
 )
-endpoint.start()
+
+# List endpoints
+cli.list_endpoints()
+
+# Serve endpoints
+cli.serve()
 ```
 
-## Future Roadmap
+## Supported Protocols
+- HTTP
+- HTTPS
+- WebSocket (WS)
+- WebSocket Secure (WSS)
+- FTP
+- SFTP
 
-- Enhanced protocol support
-- Advanced routing mechanisms
-- Improved security features
-- More comprehensive documentation
+## Contributing
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+This project is licensed under the terms of the LICENSE file in the project root.
