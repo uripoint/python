@@ -1,5 +1,6 @@
 import re
 from typing import Dict, Any, Callable, Optional
+from .protocols import validate_endpoint_config, create_protocol_connection
 
 class StreamFilterRouter:
     """
@@ -8,6 +9,7 @@ class StreamFilterRouter:
     def __init__(self):
         self.routes = {}
         self.filters = {}
+        self.endpoints = {}
 
     def add_route(self, pattern: str, handler: Callable):
         """
@@ -26,6 +28,32 @@ class StreamFilterRouter:
         :param filter_func: Function to apply filtering
         """
         self.filters[name] = filter_func
+
+    def add_endpoint(self, uri: str, config: Dict[str, Any]) -> bool:
+        """
+        Add an endpoint with configuration
+        
+        :param uri: URI of the endpoint
+        :param config: Configuration for the endpoint
+        :return: Success status
+        """
+        parts = get_url_parts(uri)
+        protocol = parts['scheme']
+        
+        if not validate_endpoint_config(protocol, config):
+            raise ValueError(f"Invalid configuration for protocol {protocol}")
+        
+        endpoint_id = uri
+        self.endpoints[endpoint_id] = {
+            'uri': uri,
+            'protocol': protocol,
+            'hostname': parts['netloc'].split(':')[0],
+            'port': int(parts['netloc'].split(':')[1]) if ':' in parts['netloc'] else None,
+            'path': parts['path'],
+            'config': config
+        }
+        
+        return create_protocol_connection(protocol)
 
     def match_route(self, uri: str) -> Optional[Callable]:
         """
@@ -64,6 +92,14 @@ class StreamFilterRouter:
             filtered_data = self.apply_filters(data)
             return handler(filtered_data)
         return None
+
+    def get_endpoints(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Get all registered endpoints
+        
+        :return: Dictionary of endpoints
+        """
+        return self.endpoints
 
 def get_url_parts(url: str) -> Dict[str, str]:
     """

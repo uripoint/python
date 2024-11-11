@@ -1,21 +1,33 @@
 """
-uripoint
-~~~~~~~~~~~~~~~~~~~
-
-A flexible stream routing and filtering system with support for scheduled tasks and event reactions.
-
-:copyright: (c) 2024 by pipexy
-:license: MIT, see LICENSE for more details.
+UriPoint - A flexible Python library for managing network endpoints
 """
 
-try:
-    from ._version import version as __version__
-except ImportError:
-    __version__ = "unknown"
+from .cli import UriPointCLI
+from .router import StreamFilterRouter, get_url_parts, extract_query_params
+from .protocols import (
+    ProtocolHandler,
+    MQTTHandler,
+    RedisHandler,
+    SMTPHandler,
+    AMQPHandler,
+    DNSHandler,
+    get_protocol_handler,
+    validate_endpoint_config,
+    create_protocol_connection
+)
 
-from .main import main
-from .process import ManagedProcess
-from .router import StreamFilterRouter
-from .process_utils import check_existing_processes
-
-__all__ = ['main']
+__all__ = [
+    'UriPointCLI',
+    'StreamFilterRouter',
+    'get_url_parts',
+    'extract_query_params',
+    'ProtocolHandler',
+    'MQTTHandler',
+    'RedisHandler',
+    'SMTPHandler',
+    'AMQPHandler',
+    'DNSHandler',
+    'get_protocol_handler',
+    'validate_endpoint_config',
+    'create_protocol_connection'
+]

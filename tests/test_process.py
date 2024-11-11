@@ -14,7 +14,7 @@ def test_managed_process_multiprocessing():
         with counter.get_lock():
             counter.value += 1
 
-    process = ManagedProcess(target=increment_counter, args=(results,))
+    process = ManagedProcess(increment_counter, results)
     process.start()
     process.join()
 
@@ -22,19 +22,17 @@ def test_managed_process_multiprocessing():
 
 def test_managed_process_threading():
     """Test ManagedProcess with threading"""
-    counter = [0]
-    lock = threading.Lock()
+    results = multiprocessing.Value('i', 0)
 
-    def increment_counter():
-        nonlocal counter
-        with lock:
-            counter[0] += 1
+    def increment_counter(counter):
+        with counter.get_lock():
+            counter.value += 1
 
-    thread_process = ManagedProcess(target=increment_counter)
+    thread_process = ManagedProcess(increment_counter, results)
     thread_process.start()
     thread_process.join()
 
-    assert counter[0] == 1
+    assert results.value == 1
 
 def test_managed_process_multiple():
     """Test multiple concurrent processes"""
@@ -46,7 +44,7 @@ def test_managed_process_multiple():
             counter.value += 1
 
     processes = [
-        ManagedProcess(target=increment_counter, args=(counter, lock)) for _ in range(5)
+        ManagedProcess(increment_counter, counter, lock) for _ in range(5)
     ]
 
     for p in processes:
@@ -82,7 +80,7 @@ def test_process_lifecycle():
         time.sleep(1)
 
     # Test start and is_alive
-    process = ManagedProcess(target=long_task)
+    process = ManagedProcess(long_task)
     assert not process.is_alive()
     
     process.start()
@@ -96,7 +94,8 @@ def test_process_error_handling():
     def error_task():
         raise ValueError("Test error")
 
-    process = ManagedProcess(target=error_task)
+    process = ManagedProcess(error_task)
+    process.start()
     
     with pytest.raises(ValueError):
-        process.start()
+        process.join()

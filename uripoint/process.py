@@ -1,78 +1,139 @@
-import multiprocessing
+"""
+Process management utilities for UriPoint
+"""
 import threading
-import time
+import multiprocessing
+from typing import Any, Callable, Optional, Dict, Tuple
 
 class ManagedProcess:
-    def __init__(self, target=None, args=(), kwargs=None):
-        """
-        A wrapper for managing processes and threads
-        
-        :param target: Function to be executed
-        :param args: Positional arguments for the target function
-        :param kwargs: Keyword arguments for the target function
-        """
-        self.kwargs = kwargs or {}
-        self.args = args
+    """
+    A managed process class that handles process lifecycle and error propagation
+    """
+    def __init__(self, target: Callable, *args, **kwargs):
         self.target = target
+        self.args = args
+        self.kwargs = kwargs
+        self.error_queue = multiprocessing.Queue()
         self._process = None
-        self._thread = None
-
+        
+    def _wrapped_target(self):
+        """
+        Wrapper for the target function that captures errors
+        """
+        try:
+            result = self.target(*self.args, **self.kwargs)
+            self.error_queue.put(None)  # No error
+            return result
+        except Exception as e:
+            self.error_queue.put(e)
+            raise  # Re-raise to ensure process terminates with error
+            
     def start(self):
         """
-        Start the process or thread based on the target
-        
-        :return: Process or thread instance
+        Start the managed process
         """
-        if self.target is None:
-            raise ValueError("No target function provided")
-        
-        # Determine whether to use multiprocessing or threading
-        if hasattr(self.target, '__call__'):
-            try:
-                self._process = multiprocessing.Process(
-                    target=self.target, 
-                    args=self.args, 
-                    kwargs=self.kwargs
-                )
-                self._process.start()
-                return self._process
-            except Exception:
-                self._thread = threading.Thread(
-                    target=self.target, 
-                    args=self.args, 
-                    kwargs=self.kwargs
-                )
-                self._thread.start()
-                return self._thread
-        
-        raise TypeError("Target must be a callable")
-
-    def join(self, timeout=None):
+        if self._process is None:
+            self._process = multiprocessing.Process(
+                target=self._wrapped_target
+            )
+            self._process.start()
+            
+    def join(self, timeout: Optional[float] = None):
         """
-        Wait for the process or thread to complete
+        Join the process and check for errors
         
-        :param timeout: Maximum wait time
+        :param timeout: Optional timeout in seconds
         """
         if self._process:
             self._process.join(timeout)
-        elif self._thread:
-            self._thread.join(timeout)
-
-    def is_alive(self):
-        """
-        Check if the process or thread is still running
-        
-        :return: Boolean indicating if process/thread is alive
-        """
-        if self._process:
-            return self._process.is_alive()
-        elif self._thread:
-            return self._thread.is_alive()
-        return False
-
+            
+            # Check for errors
+            try:
+                error = self.error_queue.get(block=False)
+                if error:
+                    raise error
+            except multiprocessing.queues.Empty:
+                # No error occurred or process hasn't finished
+                pass
+                
     def terminate(self):
         """
-        Terminate the process if it's a multiprocessing process
+        Terminate the process
         """
-        if self._process and hasattr(self._process, 'terminate'):
+        if self._process:
             self._process.terminate()
+            self._process.join()
+            
+    def is_alive(self) -> bool:
+        """
+        Check if the process is alive
+        
+        :return: Process alive status
+        """
+        return bool(self._process and self._process.is_alive())
+
+class ProcessManager:
+    """
+    Manager for handling multiple processes
+    """
+    def __init__(self):
+        self.processes: Dict[str, ManagedProcess] = {}
+        self._lock = threading.Lock()
+        
+    def start_process(self, name: str, target: Callable, *args, **kwargs) -> bool:
+        """
+        Start a new managed process
+        
+        :param name: Process name
+        :param target: Target function
+        :return: Success status
+        """
+        with self._lock:
+            if name in self.processes:
+                return False
+                
+            process = ManagedProcess(target, *args, **kwargs)
+            self.processes[name] = process
+            process.start()
+            return True
+            
+    def stop_process(self, name: str) -> bool:
+        """
+        Stop a managed process
+        
+        :param name: Process name
+        :return: Success status
+        """
+        with self._lock:
+            process = self.processes.get(name)
+            if process:
+                process.terminate()
+                del self.processes[name]
+                return True
+            return False
+            
+    def get_process(self, name: str) -> Optional[ManagedProcess]:
+        """
+        Get a process by name
+        
+        :param name: Process name
+        :return: ManagedProcess instance if found
+        """
+        return self.processes.get(name)
+        
+    def list_processes(self) -> Dict[str, bool]:
+        """
+        List all processes and their status
+        
+        :return: Dictionary of process names and alive status
+        """
+        return {name: proc.is_alive() for name, proc in self.processes.items()}
+        
+    def cleanup(self):
+        """
+        Clean up all processes
+        """
+        with self._lock:
+            for process in self.processes.values():
+                process.terminate()
+            self.processes.clear()

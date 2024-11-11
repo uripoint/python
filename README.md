@@ -81,12 +81,54 @@ uripoint --serve
 ```
 
 ## Supported Protocols
+
+### Web Protocols
 - HTTP
 - HTTPS
 - WebSocket (WS)
 - WebSocket Secure (WSS)
+
+### File Transfer Protocols
 - FTP
 - SFTP
+
+### IoT and Messaging Protocols
+- MQTT
+  - Supports IoT device communication
+  - QoS levels and retain messages
+  - Topic-based routing
+  - See [MQTT Example](examples/protocol_examples/mqtt_example.py)
+
+### Data Store Protocols
+- Redis
+  - Caching and data storage
+  - Multiple database support
+  - Key expiration
+  - See [Redis Example](examples/protocol_examples/redis_example.py)
+
+### Email Protocols
+- SMTP
+  - Email sending capabilities
+  - HTML and plain text support
+  - Template system
+  - Attachments handling
+  - See [SMTP Example](examples/protocol_examples/smtp_example.py)
+
+### Message Queue Protocols
+- AMQP (RabbitMQ)
+  - Message queuing
+  - Exchange types (direct, topic, fanout)
+  - Routing capabilities
+  - Durable queues
+  - See [AMQP Example](examples/protocol_examples/amqp_example.py)
+
+### Domain Name Protocols
+- DNS
+  - Forward and reverse lookups
+  - Multiple record types (A, AAAA, MX, TXT, SRV)
+  - DNS monitoring
+  - Caching support
+  - See [DNS Example](examples/protocol_examples/dns_example.py)
 
 ## Programmatic Usage
 

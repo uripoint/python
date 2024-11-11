@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.1.0] - Protocol Expansion and Process Management
+### Added
+- New protocol implementations:
+  - MQTT for IoT device communication
+  - Redis for caching and data storage
+  - SMTP for email handling
+  - AMQP (RabbitMQ) for message queuing
+  - DNS for domain resolution
+- Comprehensive protocol examples in examples/protocol_examples/
+- Enhanced process management with robust error handling
+
+### Implemented
+- Protocol-specific handlers with validation
+- Example implementations for each new protocol
+- Improved process management with proper argument handling
+- Thread-safe operations in process management
+
+### Improvements
+- Enhanced error propagation in process management
+- More robust protocol validation
+- Expanded test coverage
+- Updated documentation for new protocols
+
 ## [1.0.0] - Stable Release and Major Feature Consolidation
 ### Added
 - Comprehensive library stability and feature maturity
