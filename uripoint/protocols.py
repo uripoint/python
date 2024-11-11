@@ -3,6 +3,7 @@ Protocol handlers for UriPoint
 """
 from typing import Dict, Any, Optional
 from abc import ABC, abstractmethod
+import json
 
 class ProtocolHandler(ABC):
     @abstractmethod
@@ -12,6 +13,49 @@ class ProtocolHandler(ABC):
     @abstractmethod
     def connect(self) -> bool:
         pass
+
+    def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        """Handle incoming request for the endpoint"""
+        return json.dumps(endpoint_info.get('config', {}).get('response', {}))
+
+class HTTPHandler(ProtocolHandler):
+    def validate_config(self, config: Dict[str, Any]) -> bool:
+        # HTTP endpoints require a response configuration and method
+        if 'response' not in config:
+            return False
+        
+        # Validate methods if specified
+        if 'methods' in config:
+            valid_methods = {'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'}
+            methods = set(method.upper() for method in config['methods'])
+            if not methods.issubset(valid_methods):
+                return False
+        
+        return True
+
+    def connect(self) -> bool:
+        # HTTP doesn't require persistent connection
+        return True
+
+    def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        """
+        Handle HTTP request based on method
+        
+        :param endpoint_info: Endpoint configuration
+        :param method: HTTP method used
+        :return: JSON response
+        """
+        config = endpoint_info.get('config', {})
+        allowed_methods = {m.upper() for m in config.get('methods', ['GET'])}
+        
+        if method.upper() not in allowed_methods:
+            raise ValueError(f"Method {method} not allowed. Allowed methods: {allowed_methods}")
+        
+        response_data = config.get('response', {})
+        if isinstance(response_data, dict):
+            response_data['allowed_methods'] = list(allowed_methods)
+        
+        return json.dumps(response_data)
 
 class MQTTHandler(ProtocolHandler):
     def validate_config(self, config: Dict[str, Any]) -> bool:
@@ -64,6 +108,8 @@ def get_protocol_handler(protocol: str) -> Optional[ProtocolHandler]:
     Factory function to get the appropriate protocol handler
     """
     handlers = {
+        'http': HTTPHandler,
+        'https': HTTPHandler,
         'mqtt': MQTTHandler,
         'redis': RedisHandler,
         'smtp': SMTPHandler,

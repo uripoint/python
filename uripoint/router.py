@@ -44,11 +44,15 @@ class StreamFilterRouter:
             raise ValueError(f"Invalid configuration for protocol {protocol}")
         
         endpoint_id = uri
+        netloc_parts = parts['netloc'].split(':')
+        hostname = netloc_parts[0]
+        port = int(netloc_parts[1]) if len(netloc_parts) > 1 else None
+        
         self.endpoints[endpoint_id] = {
             'uri': uri,
             'protocol': protocol,
-            'hostname': parts['netloc'].split(':')[0],
-            'port': int(parts['netloc'].split(':')[1]) if ':' in parts['netloc'] else None,
+            'hostname': hostname,
+            'port': port,
             'path': parts['path'],
             'config': config
         }
