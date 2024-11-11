@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.0] - Comprehensive Example Documentation
+### Added
+- Dual Python and curl examples for all protocols
+- Command-line testing instructions
+- Protocol-specific testing tools
+- Real-world usage patterns
+
+### Implemented
+- HTTP/REST API examples with CRUD
+- MQTT IoT device examples
+- Redis cache operation examples
+- SMTP email handling examples
+- RTSP/HLS streaming examples
+- AMQP message queue examples
+- DNS service examples
+- WebSocket chat examples
+
+### Improvements
+- Better documentation structure
+- More practical examples
+- Testing tool integration
+- Command-line usage clarity
+
 ## [1.4.0] - ASCII Documentation and Examples Enhancement
 ### Added
 - ASCII schema diagrams in README
@@ -91,4 +114,87 @@
 - Updated documentation for new protocols
 
 ## [1.0.0] - Stable Release and Major Feature Consolidation
-[Rest of changelog remains unchanged...]
+### Added
+- Comprehensive library stability
+- Full production-ready endpoint management
+- Enhanced error handling and logging
+- Advanced configuration options
+
+### Implemented
+- Robust endpoint lifecycle management
+- Complete protocol support with routing
+- Extensive configuration validation
+- Performance optimizations
+
+### Improvements
+- Streamlined API design
+- Improved documentation
+- Enhanced security features
+- Better Python environment integration
+
+### New Features
+- Advanced configuration validation
+- Comprehensive logging support
+- Expanded protocol support
+- Docker integration improvements
+
+## [0.5.0] - Flexible Endpoint Management
+### Added
+- Advanced URI parsing
+- Full URI and component-based creation
+- Flexible endpoint configuration
+- Enhanced CLI features
+
+### Implemented
+- Full URI parsing
+- Component-based creation
+- Multiple protocol support
+- Default value handling
+
+### Improvements
+- Flexible endpoint management
+- Enhanced CLI usability
+- Comprehensive documentation
+- Example demonstrations
+
+### New Features
+- Basic protocol support:
+  - HTTP/HTTPS
+  - WebSocket (WS/WSS)
+  - FTP/SFTP
+- Persistent configuration
+- Endpoint management
+
+## [0.4.0] - Initial Testing Framework
+### Added
+- Basic routing tests
+- Process management tests
+- Example scripts
+- URL parsing tests
+
+### Implemented
+- Test framework setup
+- CI pipeline basics
+- Documentation structure
+- Example code
+
+## [0.3.0] - Core Functionality
+### Added
+- Basic endpoint management
+- Protocol handling
+- Configuration system
+- CLI interface
+
+## [0.2.0] - Project Structure
+### Added
+- Initial codebase
+- Basic documentation
+- Development setup
+- Testing framework
+
+## [0.1.0] - Project Initialization
+### Added
+- Repository setup
+- Basic structure
+- Initial documentation
+- License and README
