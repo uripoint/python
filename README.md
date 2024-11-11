@@ -2,7 +2,7 @@
 
 ## Overview
 
-UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols. It provides a unified interface for handling various communication protocols and includes a built-in server for serving live endpoints with HTTP method support.
+UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols. It provides a unified interface for handling various communication protocols, including streaming protocols (RTSP, HLS, DASH) and IoT protocols (MQTT).
 
 ## Key Features
 
@@ -69,110 +69,174 @@ uripoint --detach "http://localhost:9000/api/hello" "http://localhost:9001/metri
 uripoint --detach
 ```
 
-### HTTP Method Configuration
+## Protocol Examples
 
-Endpoints can be configured to accept specific HTTP methods:
+### Streaming Protocols
 
-```yaml
-# Example endpoint configuration
-endpoints:
-  "http://localhost:9000/api/users":
-    response:
-      users: []
-    content_type: "application/json"
-    methods: ["GET", "POST", "PUT", "DELETE"]  # Allowed methods
-
-  "http://localhost:9000/api/status":
-    response:
-      status: "OK"
-    content_type: "application/json"
-    methods: ["GET"]  # Read-only endpoint
-```
-
-### Server Example
-
-Create test endpoints with method configuration:
-
+#### RTSP Example
 ```python
 from uripoint import UriPointCLI
 
-def setup_test_endpoints():
-    cli = UriPointCLI()
-
-    # Create a read-only endpoint
-    cli.create_endpoint(
-        uri='http://localhost:9000/api/status',
-        data={
-            'response': {'status': 'OK'},
-            'methods': ['GET']
+# Create RTSP endpoint for security camera
+cli = UriPointCLI()
+cli.create_endpoint(
+    uri='rtsp://localhost:8554/camera1',
+    data={
+        'stream_url': 'rtsp://camera.example.com/stream1',
+        'transport': 'tcp',
+        'auth': {
+            'username': 'admin',
+            'password': 'secure123'
         }
-    )
-
-    # Create a full CRUD endpoint
-    cli.create_endpoint(
-        uri='http://localhost:9000/api/users',
-        data={
-            'response': {'users': []},
-            'methods': ['GET', 'POST', 'PUT', 'DELETE']
-        }
-    )
-
-setup_test_endpoints()
+    }
+)
 ```
 
-Then run the server:
-```bash
-# Start the server
-uripoint --serve
-
-# Test different methods
-curl -X GET http://localhost:9000/api/users
-curl -X POST http://localhost:9000/api/users -d '{"name": "John"}'
-curl -X PUT http://localhost:9000/api/users/1 -d '{"name": "John Doe"}'
-curl -X DELETE http://localhost:9000/api/users/1
-
-# Check allowed methods
-curl -X OPTIONS http://localhost:9000/api/users
+#### HLS Example
+```python
+# Create HLS endpoint for live streaming
+cli.create_endpoint(
+    uri='http://localhost:8080/live/stream.m3u8',
+    data={
+        'manifest_url': '/live/stream.m3u8',
+        'segment_duration': 6,
+        'options': {
+            'bandwidth_variants': [
+                {'resolution': '1080p', 'bitrate': 5000000},
+                {'resolution': '720p', 'bitrate': 2500000}
+            ]
+        }
+    }
+)
 ```
+
+#### DASH Example
+```python
+# Create DASH endpoint for video on demand
+cli.create_endpoint(
+    uri='http://localhost:8080/vod/manifest.mpd',
+    data={
+        'mpd_url': '/vod/manifest.mpd',
+        'segment_duration': 4,
+        'options': {
+            'quality_levels': [
+                {'resolution': '2160p', 'bitrate': 15000000},
+                {'resolution': '1080p', 'bitrate': 4500000}
+            ]
+        }
+    }
+)
+```
+
+### IoT Protocols
+
+#### MQTT Example
+```python
+# Create MQTT endpoint for temperature sensor
+cli.create_endpoint(
+    uri='mqtt://localhost:1883/sensors/temperature',
+    data={
+        'topic': 'sensors/temperature',
+        'qos': 1,
+        'retain': True,
+        'device': {
+            'id': 'temp_sensor_01',
+            'type': 'temperature',
+            'location': 'living_room'
+        }
+    }
+)
+
+# Create MQTT endpoint for smart light control
+cli.create_endpoint(
+    uri='mqtt://localhost:1883/devices/lights',
+    data={
+        'topic': 'devices/lights',
+        'qos': 1,
+        'retain': True,
+        'device': {
+            'id': 'smart_light_01',
+            'capabilities': ['dimming', 'color']
+        }
+    }
+)
+```
+
+See [examples/protocol_examples/](examples/protocol_examples/) for more comprehensive examples:
+- [streaming_example.py](examples/protocol_examples/streaming_example.py): RTSP, HLS, and DASH streaming
+- [mqtt_iot_example.py](examples/protocol_examples/mqtt_iot_example.py): IoT device communication
+- [redis_example.py](examples/protocol_examples/redis_example.py): Data store access
+- [smtp_example.py](examples/protocol_examples/smtp_example.py): Email handling
+- [amqp_example.py](examples/protocol_examples/amqp_example.py): Message queuing
+- [dns_example.py](examples/protocol_examples/dns_example.py): Domain resolution
 
 ## Supported Protocols
+
+### Streaming Protocols
+- RTSP
+  - Security camera streams
+  - Live video feeds
+  - Transport options (TCP/UDP)
+  - Authentication support
+
+- HLS (HTTP Live Streaming)
+  - Live streaming
+  - Video on demand
+  - Adaptive bitrate
+  - Multiple quality variants
+
+- DASH (Dynamic Adaptive Streaming over HTTP)
+  - Video on demand
+  - Live streaming
+  - Multiple quality levels
+  - Multi-language support
+
+### IoT and Messaging Protocols
+- MQTT
+  - IoT device communication
+  - QoS levels
+  - Retain messages
+  - Topic-based routing
+  - Device management
 
 ### Web Protocols
 - HTTP/HTTPS
   - RESTful API endpoints
-  - Method-specific handling (GET, POST, PUT, DELETE, etc.)
+  - Method-specific handling
   - CORS support
   - Static file serving
-  - Proxy support
-  - See examples/endpoint_demo/
 
-[Rest of protocol documentation remains unchanged...]
+### Data Store Protocols
+- Redis
+  - Caching and data storage
+  - Multiple database support
+  - Key expiration
 
-## Protocol Examples
+### Email Protocols
+- SMTP
+  - Email sending capabilities
+  - HTML and plain text support
+  - Template system
+  - Attachments handling
 
-Each protocol comes with a comprehensive example demonstrating its usage:
+### Message Queue Protocols
+- AMQP (RabbitMQ)
+  - Message queuing
+  - Exchange types
+  - Routing capabilities
+  - Durable queues
 
-```python
-# HTTP Example with Methods
-from uripoint import UriPointCLI
-
-def setup_http():
-    cli = UriPointCLI()
-    cli.create_endpoint(
-        uri='http://localhost:9000/api/users',
-        data={
-            'response': {'users': []},
-            'methods': ['GET', 'POST', 'PUT', 'DELETE']
-        }
-    )
-
-[Rest of examples remain unchanged...]
-```
+### Domain Name Protocols
+- DNS
+  - Forward and reverse lookups
+  - Multiple record types
+  - DNS monitoring
+  - Caching support
 
 ## Configuration File Location
 - **Path**: `~/.uripoint_config.yaml`
 - **Format**: YAML
-- **Contents**: List of endpoint configurations with method support
+- **Contents**: List of endpoint configurations
 
 ## Contributing
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md)

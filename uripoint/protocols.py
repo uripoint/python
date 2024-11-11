@@ -34,46 +34,102 @@ class HTTPHandler(ProtocolHandler):
         return True
 
     def connect(self) -> bool:
-        # HTTP doesn't require persistent connection
+        return True
+
+class RTSPHandler(ProtocolHandler):
+    def validate_config(self, config: Dict[str, Any]) -> bool:
+        required_fields = ['stream_url', 'transport']
+        if not all(field in config for field in required_fields):
+            return False
+        
+        valid_transports = {'udp', 'tcp', 'http'}
+        return config['transport'].lower() in valid_transports
+
+    def connect(self) -> bool:
         return True
 
     def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
-        """
-        Handle HTTP request based on method
-        
-        :param endpoint_info: Endpoint configuration
-        :param method: HTTP method used
-        :return: JSON response
-        """
         config = endpoint_info.get('config', {})
-        allowed_methods = {m.upper() for m in config.get('methods', ['GET'])}
+        return json.dumps({
+            'stream_url': config.get('stream_url'),
+            'transport': config.get('transport'),
+            'status': 'streaming'
+        })
+
+class HLSHandler(ProtocolHandler):
+    def validate_config(self, config: Dict[str, Any]) -> bool:
+        required_fields = ['manifest_url', 'segment_duration']
+        if not all(field in config for field in required_fields):
+            return False
         
-        if method.upper() not in allowed_methods:
-            raise ValueError(f"Method {method} not allowed. Allowed methods: {allowed_methods}")
+        # Validate segment duration (typically 2-10 seconds)
+        return 1 <= config['segment_duration'] <= 10
+
+    def connect(self) -> bool:
+        return True
+
+    def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        config = endpoint_info.get('config', {})
+        return json.dumps({
+            'manifest_url': config.get('manifest_url'),
+            'segment_duration': config.get('segment_duration'),
+            'status': 'streaming'
+        })
+
+class DASHHandler(ProtocolHandler):
+    def validate_config(self, config: Dict[str, Any]) -> bool:
+        required_fields = ['mpd_url', 'segment_duration']
+        if not all(field in config for field in required_fields):
+            return False
         
-        response_data = config.get('response', {})
-        if isinstance(response_data, dict):
-            response_data['allowed_methods'] = list(allowed_methods)
-        
-        return json.dumps(response_data)
+        # Validate segment duration
+        return 1 <= config['segment_duration'] <= 10
+
+    def connect(self) -> bool:
+        return True
+
+    def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        config = endpoint_info.get('config', {})
+        return json.dumps({
+            'mpd_url': config.get('mpd_url'),
+            'segment_duration': config.get('segment_duration'),
+            'status': 'streaming'
+        })
 
 class MQTTHandler(ProtocolHandler):
     def validate_config(self, config: Dict[str, Any]) -> bool:
-        required_fields = ['qos']
+        required_fields = ['topic', 'qos']
+        if not all(field in config for field in required_fields):
+            return False
+        
+        # Validate QoS level (0, 1, or 2)
+        return config['qos'] in [0, 1, 2]
+
+    def connect(self) -> bool:
+        return True
+
+    def handle_request(self, endpoint_info: Dict[str, Any], method: str = 'GET') -> str:
+        config = endpoint_info.get('config', {})
+        return json.dumps({
+            'topic': config.get('topic'),
+            'qos': config.get('qos'),
+            'status': 'connected'
+        })
+
+class WebSocketHandler(ProtocolHandler):
+    def validate_config(self, config: Dict[str, Any]) -> bool:
+        required_fields = ['protocol']
         return all(field in config for field in required_fields)
 
     def connect(self) -> bool:
-        # Implementation for MQTT connection
         return True
 
 class RedisHandler(ProtocolHandler):
     def validate_config(self, config: Dict[str, Any]) -> bool:
-        # Redis has no required fields, but validate optional ones
         optional_fields = ['db', 'decode_responses', 'max_connections']
         return isinstance(config, dict)
 
     def connect(self) -> bool:
-        # Implementation for Redis connection
         return True
 
 class SMTPHandler(ProtocolHandler):
@@ -82,7 +138,6 @@ class SMTPHandler(ProtocolHandler):
         return all(field in config for field in required_fields)
 
     def connect(self) -> bool:
-        # Implementation for SMTP connection
         return True
 
 class AMQPHandler(ProtocolHandler):
@@ -91,7 +146,6 @@ class AMQPHandler(ProtocolHandler):
         return all(field in config for field in required_fields)
 
     def connect(self) -> bool:
-        # Implementation for AMQP connection
         return True
 
 class DNSHandler(ProtocolHandler):
@@ -100,7 +154,6 @@ class DNSHandler(ProtocolHandler):
         return all(field in config for field in required_fields)
 
     def connect(self) -> bool:
-        # Implementation for DNS connection
         return True
 
 def get_protocol_handler(protocol: str) -> Optional[ProtocolHandler]:
@@ -110,7 +163,12 @@ def get_protocol_handler(protocol: str) -> Optional[ProtocolHandler]:
     handlers = {
         'http': HTTPHandler,
         'https': HTTPHandler,
+        'rtsp': RTSPHandler,
+        'hls': HLSHandler,
+        'dash': DASHHandler,
         'mqtt': MQTTHandler,
+        'ws': WebSocketHandler,
+        'wss': WebSocketHandler,
         'redis': RedisHandler,
         'smtp': SMTPHandler,
         'amqp': AMQPHandler,

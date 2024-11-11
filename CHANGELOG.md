@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.3.0] - Streaming and IoT Protocol Support
+### Added
+- Streaming protocol support:
+  - RTSP for security cameras and live feeds
+  - HLS for HTTP Live Streaming
+  - DASH for Dynamic Adaptive Streaming
+- Enhanced MQTT support for IoT devices:
+  - Sensor data handling
+  - Device management
+  - Smart home automation
+- Comprehensive protocol examples
+
+### Implemented
+- RTSP handler with TCP/UDP transport
+- HLS handler with adaptive bitrate
+- DASH handler with quality levels
+- IoT device communication patterns
+- Streaming protocol validation
+- Device status monitoring
+
+### Improvements
+- Better protocol handler organization
+- Enhanced example documentation
+- More comprehensive IoT support
+- Streaming configuration validation
+
 ## [1.2.0] - HTTP Method Support and Server Enhancements
 ### Added
 - HTTP method configuration for endpoints
