@@ -6,6 +6,10 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+
+kill $(lsof -t -i:8080)
+kill $(lsof -t -i:8082)
+
 # Function to print colored status
 print_status() {
     echo -e "${BLUE}[INFO]${NC} $1"
@@ -67,11 +71,11 @@ if [ $TEST_STATUS -eq 0 ]; then
     HTTP_PID=$!
     
     print_success "Demo is running!"
-    print_status "Access the encrypted player at: http://localhost:$HTTP_PORT/encrypted_player.html"
+    print_status "Access the encrypted player at: https://localhost:$HTTP_PORT/encrypted_player.html"
     print_status "Available streams:"
-    echo "- Encrypted HLS: http://localhost:8000/encrypted/hls/master.m3u8"
-    echo "- Encrypted DASH: http://localhost:8000/encrypted/dash/manifest.mpd"
-    echo "- DRM License Server: http://localhost:8000/drm/license"
+    echo "- Encrypted HLS: https://localhost:8080/encrypted/hls/master.m3u8"
+    echo "- Encrypted DASH: https://localhost:8080/encrypted/dash/manifest.mpd"
+    echo "- DRM License Server: https://localhost:8080/drm/license"
     print_status "Press Ctrl+C to stop the demo"
     
     # Save PIDs for cleanup
@@ -115,7 +119,7 @@ trap cleanup EXIT
 # Monitor key rotation
 monitor_keys() {
     while true; do
-        curl -s http://localhost:8000/keys/manage | jq .
+        curl -s https://localhost:8080/keys/manage | jq .
         sleep 5
     done
 }

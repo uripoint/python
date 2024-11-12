@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"   # AMQP protocol port
+      - "15672:15672" # Management UI port
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - task_net
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  producer:
+    build: .
+    environment:
+      - COMPONENT=producer
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - task_net
+    restart: unless-stopped
+
+  worker:
+    build: .
+    environment:
+      - COMPONENT=worker
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    deploy:
+      replicas: 3  # Run 3 worker instances
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    networks:
+      - task_net
+    restart: unless-stopped
+
+  collector:
+    build: .
+    environment:
+      - COMPONENT=collector
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - task_net
+    restart: unless-stopped
+
+networks:
+  task_net:
+    driver: bridge
+
+volumes:
+  rabbitmq_data:  # Persistent volume for RabbitMQ data

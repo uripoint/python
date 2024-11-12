@@ -30,22 +30,10 @@ nstall development dependencies:
 ```bash
 python -m venv venv
 source venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-2. Run tests:
-```bash
-python -m pytest
-```
-
-### Basic Video Streaming
-```bash
-# Start basic streaming demo
-./run_demo.sh
-
-# Access player
-open http://localhost:8000/player.html
-```
 
 ### Encrypted Streaming
 ```bash
@@ -56,27 +44,6 @@ open http://localhost:8000/player.html
 open http://localhost:8000/encrypted_player.html
 ```
 
-### Security Features
-```bash
-# Start security demo
-./run_security_demo.sh
-
-# Available endpoints:
-- https://localhost:8000/auth/token
-- https://localhost:8000/validate
-- https://localhost:8000/security/monitor
-```
-
-## Example Features
-
-### 1. Video Streaming
-- Basic HTTP streaming
-- HLS adaptive streaming
-- DASH streaming
-- RTSP camera support
-- Quality selection
-- Bandwidth monitoring
-
 ### 2. Encrypted Streaming
 - HLS encryption
 - DASH DRM
@@ -85,30 +52,18 @@ open http://localhost:8000/encrypted_player.html
 - Encrypted playback
 - Secure key delivery
 
-### 3. Security Features
-- Input validation
-- JWT authentication
-- Process sandboxing
-- Network security
-- TLS encryption
-- Security monitoring
-
 ## Testing
 
 Each feature set includes comprehensive tests:
 
 ```bash
-# Test basic streaming
-python3 test_stream.py
-
-# Test video endpoints
-python3 test_video_endpoints.py
-
 # Test encryption
 python3 test_encrypted_video.py
+```
 
-# Test security features
-python3 test_security.py
+Run tests:
+```bash
+python -m pytest
 ```
 
 ## Example Usage

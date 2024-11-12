@@ -1,0 +1,4 @@
+uripoint
+jinja2>=3.0.0
+psutil>=5.8.0
+python-dateutil>=2.8.2

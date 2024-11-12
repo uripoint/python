@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes  # Enable persistence
+    networks:
+      - session_net
+
+  app:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - session_net
+    restart: unless-stopped
+
+networks:
+  session_net:
+    driver: bridge
+
+volumes:
+  redis_data:  # Persistent volume for Redis data

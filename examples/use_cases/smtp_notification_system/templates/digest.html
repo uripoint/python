@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Digest - {{date}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #2196F3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .metric {
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            background-color: #e3f2fd;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976D2;
+        }
+        .activity-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .chart-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Your Daily Digest</h1>
+        <p>{{date}}</p>
+    </div>
+    
+    <div class="content">
+        <div class="section">
+            <h2>Today's Highlights</h2>
+            <div class="metric">
+                <div class="metric-value">{{active_users}}</div>
+                <div>Active Users</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">{{new_signups}}</div>
+                <div>New Signups</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">{{total_interactions}}</div>
+                <div>Interactions</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Recent Activities</h2>
+            {% for activity in activities %}
+            <div class="activity-item">
+                <strong>{{activity.time}}</strong>
+                <p>{{activity.description}}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="section">
+            <h2>System Performance</h2>
+            <ul>
+                <li>Average Response Time: {{avg_response_time}}ms</li>
+                <li>System Uptime: {{uptime}}</li>
+                <li>CPU Usage: {{cpu_usage}}%</li>
+                <li>Memory Usage: {{memory_usage}}%</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Upcoming Events</h2>
+            <ul>
+            {% for event in upcoming_events %}
+                <li>
+                    <strong>{{event.date}}</strong> - {{event.name}}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <p style="text-align: center; margin-top: 20px;">
+            <a href="{{dashboard_url}}" style="color: #2196F3;">View Full Dashboard</a>
+        </p>
+    </div>
+</body>
+</html>

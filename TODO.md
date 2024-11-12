@@ -1,8 +1,7 @@
 # Project TODOs
 do more tests from TODO and update CHANGELOG and README.md
-create examples with dockerfile and docker compose for many different protocols togheter
-each uripoint endpoint in separated docker
-create usa cases for all that examples and answer question why it is interestiong
+create usa cases for all that examples and answer question why it is interestiong, create examples in each folder one,  with dockerfile, docker compose, python example, README.md for many different protocols together each uripoint endpoint in separated dockerfile
+
 
 ## Development
 - [x] Set up basic project structure

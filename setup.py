@@ -6,9 +6,9 @@ setup(
     description="A flexible Python library for endpoint management and URI processing",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
-    author="Project Maintainer",
-    author_email="maintainer@uripoint.com",
-    url="https://github.com/yourusername/uripoint",
+    author="Tom Sapletta",
+    author_email="info@softreck.dev",
+    url="https://github.com/uripoint/python",
     packages=find_packages(exclude=['tests*']),
     install_requires=[
         'pyyaml>=6.0',

@@ -71,6 +71,7 @@ setup_test_stream() {
     # Create stream directory
     STREAM_DIR="$(dirname "$0")/stream"
     mkdir -p "$STREAM_DIR"
+    echo $STREAM_DIR
     
     # Create test video with color bars and time overlay
     ffmpeg -y \

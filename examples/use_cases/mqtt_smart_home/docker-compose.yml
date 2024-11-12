@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  broker:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"  # MQTT default port
+      - "9001:9001"  # WebSocket port
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    networks:
+      - smart_home_net
+
+  app:
+    build: .
+    depends_on:
+      - broker
+    environment:
+      - MQTT_BROKER_HOST=broker
+      - MQTT_BROKER_PORT=1883
+    networks:
+      - smart_home_net
+    restart: unless-stopped
+
+networks:
+  smart_home_net:
+    driver: bridge
+
+volumes:
+  mosquitto_data:
+  mosquitto_log:

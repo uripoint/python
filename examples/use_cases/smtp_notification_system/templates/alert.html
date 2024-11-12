@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>System Alert - {{alert_type}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: {{alert_color}};
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .alert-box {
+            border-left: 4px solid {{alert_color}};
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+        .details {
+            background-color: #fff;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .action-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: {{alert_color}};
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{alert_type}} Alert</h1>
+    </div>
+    <div class="content">
+        <div class="alert-box">
+            <h2>{{alert_title}}</h2>
+            <p>{{alert_message}}</p>
+        </div>
+
+        <div class="details">
+            <h3>Alert Details</h3>
+            <ul>
+                <li>Priority: {{priority}}</li>
+                <li>Time: {{timestamp}}</li>
+                <li>System: {{system_name}}</li>
+                <li>Component: {{component}}</li>
+            </ul>
+        </div>
+
+        <p>{{action_description}}</p>
+        
+        {% if action_required %}
+        <a href="{{action_url}}" class="action-button">Take Action</a>
+        {% endif %}
+
+        <p style="margin-top: 20px; font-size: 0.9em;">
+            If you need assistance, please contact the system administrator or reply to this email.
+        </p>
+    </div>
+</body>
+</html>
