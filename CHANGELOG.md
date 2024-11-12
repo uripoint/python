@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.9.7] - Documentation Enhancement
+
+### Added
+- Update documentation points
+
 ## [1.9.6] - Documentation Enhancement
 
 ### Added
@@ -10,7 +15,6 @@
 
 ### Added
 - Update documentation points
-
 
 ## [1.9.4] - Documentation Enhancement
 

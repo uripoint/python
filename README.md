@@ -172,47 +172,6 @@ UriPoint is a comprehensive Python library designed for unified network endpoint
    - Administration features
    - Reporting systems
 
-## Protocol Support
-
-### Web & API Protocols
-- **HTTP/HTTPS**
-  - RESTful endpoints
-  - WebHooks
-  - Static content
-  - API proxying
-
-- **WebSocket**
-  - Real-time communication
-  - Bi-directional data flow
-  - Connection pooling
-  - Event streaming
-
-### Streaming Protocols
-- **RTSP**
-  - Camera streams
-  - Media servers
-  - Stream recording
-  - Transport selection
-
-- **HLS/DASH**
-  - Adaptive bitrate
-  - Multi-quality
-  - Live streaming
-  - VOD support
-
-### IoT & Messaging
-- **MQTT**
-  - Device management
-  - Sensor data
-  - Command control
-  - State synchronization
-
-- **AMQP**
-  - Message queuing
-  - Event routing
-  - Dead letter handling
-  - Queue management
-
 ## Installation & Setup
 
 ### Basic Installation
@@ -1231,6 +1190,9 @@ Key Advantages of UriPoint:
    - Cross-protocol testing
    - Integrated monitoring
 
+
+## Protocol Support
+
 While other libraries provide excellent functionality in their specific domains, UriPoint's value proposition lies in its unified approach to handling multiple protocols and endpoint management through a single, consistent interface.
 
 This makes it particularly valuable for:
@@ -1240,7 +1202,48 @@ This makes it particularly valuable for:
 - Streaming services
 - Enterprise integrations
 
-### Others
+### Web & API Protocols
+- **HTTP/HTTPS**
+  - RESTful endpoints
+  - WebHooks
+  - Static content
+  - API proxying
+
+- **WebSocket**
+  - Real-time communication
+  - Bi-directional data flow
+  - Connection pooling
+  - Event streaming
+
+### Streaming Protocols
+- **RTSP**
+  - Camera streams
+  - Media servers
+  - Stream recording
+  - Transport selection
+
+- **HLS/DASH**
+  - Adaptive bitrate
+  - Multi-quality
+  - Live streaming
+  - VOD support
+
+### IoT & Messaging
+- **MQTT**
+  - Device management
+  - Sensor data
+  - Command control
+  - State synchronization
+
+- **AMQP**
+  - Message queuing
+  - Event routing
+  - Dead letter handling
+  - Queue management
+
+
+
+### Other solution
 There are several similar solutions, although none offers exactly the same range of functionality as UriPoint. 
 Here are the most similar libraries:
 
