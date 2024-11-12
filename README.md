@@ -196,7 +196,27 @@ uripoint [options] <command>
 │ --detach   Remove endpoints                    │
 └────────────────────────────────────────────────┘
 ```
-Endpoint Management
+
+### Endpoint Management
+Options
+```bash
+# List all configured endpoints
+uripoint --list
+
+# Serve all endpoints as a live server
+uripoint --serve
+
+# Test endpoints
+uripoint --test
+
+# Detach specific endpoints
+uripoint --detach "http://localhost:9000/api/hello" "http://localhost:9001/metrics"
+
+# Detach all endpoints
+uripoint --detach
+```
+
+Examples
 ```bash
 uripoint create --uri http://localhost:8080/api --protocol http
 uripoint list [--format json|yaml]
@@ -238,25 +258,6 @@ uripoint --uri http://localhost:8080/api/users --data '{"response": {"status": "
 ```bash
 # Create an endpoint using individual components
 uripoint --hostname localhost --path /api/status --protocol http --port 8001 --data '{"status": "OK"}' --method GET
-```
-
-### Endpoint Management
-
-```bash
-# List all configured endpoints
-uripoint --list
-
-# Serve all endpoints as a live server
-uripoint --serve
-
-# Test endpoints
-uripoint --test
-
-# Detach specific endpoints
-uripoint --detach "http://localhost:9000/api/hello" "http://localhost:9001/metrics"
-
-# Detach all endpoints
-uripoint --detach
 ```
 
 
