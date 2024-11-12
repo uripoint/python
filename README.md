@@ -1,218 +1,203 @@
 # UriPoint
 
-UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols. It provides a unified interface for handling various communication protocols, including streaming protocols (RTSP, HLS, DASH) and IoT protocols (MQTT).
+# UriPoint - Universal Network Endpoint Management
 
-## UriPoint ecoSystem      
-The library was designed as a versatile tool for IT professionals working with various network protocols who need a simple and unified way to manage endpoints in their systems.
-It's particularly useful for teams that need to handle multiple protocols and services within a single toolset, 
-making it easier to maintain and monitor network communications across different platforms and protocols.
+## Table of Contents
+1. [Overview](#overview)
+2. [Key Features](#key-features)
+3. [Target Audience](#target-audience)
+4. [Architecture](#architecture)
+5. [Protocol Support](#protocol-support)
+6. [Installation & Setup](#installation--setup)
+7. [Usage Guide](#usage-guide)
+8. [Protocol Examples](#protocol-examples)
+9. [Testing Framework](#testing-framework)
+10. [Advanced Topics](#advanced-topics)
 
+## Overview
+
+UriPoint is a comprehensive Python library designed for unified network endpoint management across multiple protocols. It simplifies the creation, management, and monitoring of network endpoints through a single, cohesive interface.
+
+### Why UriPoint?
+- **Unified Management**: Handle multiple protocols through one interface
+- **Simplified Configuration**: Easy setup through CLI or Python API
+- **Protocol Agnostic**: Support for web, streaming, IoT, and messaging protocols
+- **Production Ready**: Built-in monitoring, testing, and persistence
+
+## Key Features
+
+### Core Capabilities
+1. **Protocol Unification**
+   - Single interface for all supported protocols
+   - Consistent API across different endpoint types
+   - Standardized configuration format
+
+2. **Management Tools**
+   - CLI-based endpoint management
+   - Configuration persistence
+   - Real-time monitoring
+   - Comprehensive testing framework
+
+3. **Enterprise Features**
+   - High availability support
+   - Load balancing capabilities
+   - Security integrations
+   - Logging and metrics
+
+### Technical Highlights
+- **Persistent Configuration**: YAML-based storage (`~/.uripoint_config.yaml`)
+- **Protocol Handlers**: Dedicated handlers for each supported protocol
+- **Monitoring System**: Real-time endpoint status tracking
+- **Testing Suite**: Comprehensive testing framework with chaos engineering support
+
+## Target Audience
+
+### 1. Distributed Systems Developers
+- Building microservices architectures
+- Managing service discovery
+- Implementing API gateways
+- Developing service meshes
+
+### 2. DevOps Engineers
+- Infrastructure automation
+- Service deployment
+- Monitoring setup
+- Configuration management
+
+### 3. IoT Specialists
+- Device management
+- Sensor networks
+- Data collection systems
+- Remote monitoring
+
+### 4. Streaming Engineers
+- Video streaming services
+- Live broadcast systems
+- Security camera networks
+- Content delivery networks
+
+### 5. Backend Developers
+- API development
+- Service integration
+- Message queue implementation
+- Cache management
+
+## Architecture
+
+### System Components
 ```ascii
-┌───────────────────────────────────────────────────────────┐
-│                      UriPoint System                      │
-├──────────────────┬───────────────────┬────────────────────┤
-│   CLI Interface  │ Protocol Handlers │  Endpoint Manager  │
-├──────────────────┴───────────────────┴────────────────────┤
-│                                                           │
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐      │
-│  │   HTTP(S)   │   │    MQTT     │   │    RTSP     │      │
-│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │      │
-│  └─────────────┘   └─────────────┘   └─────────────┘      │
-│                                                           │
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐      │
-│  │   Redis     │   │    SMTP     │   │    AMQP     │      │
-│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │      │
-│  └─────────────┘   └─────────────┘   └─────────────┘      │
-│                                                           │
-└───────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────┐
+│                    UriPoint System                    │
+├───────────────┬──────────────────┬────────────────────┤
+│ Core Engine   │ Protocol Layer   │ Management Layer   │
+├───────────────┼──────────────────┼────────────────────┤
+│ - Config      │ - HTTP/HTTPS     │ - CLI Interface    │
+│ - Persistence │ - MQTT           │ - API Interface    │
+│ - Monitoring  │ - RTSP           │ - Web Dashboard    │
+│ - Testing     │ - Redis          │ - Monitoring UI    │
+└───────────────┴──────────────────┴────────────────────┘
 ```
-UriPoint provides a unified interface for handling various communication protocols, including streaming protocols (RTSP, HLS, DASH) and IoT protocols (MQTT), including the CLI interface, protocol handlers, and endpoint manager, can be used to create and manage endpoints across multiple protocols,
-making it a versatile tool for network communication.
 
+### Component Interaction
+1. **Core Engine**
+   - Configuration management
+   - State persistence
+   - Event handling
+   - Resource management
 
-### Key features
+2. **Protocol Layer**
+   - Protocol-specific handlers
+   - Data transformation
+   - Connection management
+   - Error handling
 
-- Unified interface - single interface for multiple protocols
-- CLI interface - quick configuration without coding
-- Persistent configuration - configuration retention between sessions
-- Built-in testing framework - comprehensive testing capabilities
-- Multiple protocol support - handling various communication protocols
-- Monitoring capabilities - endpoint monitoring and status tracking
+3. **Management Layer**
+   - User interfaces
+   - Monitoring tools
+   - Administration features
+   - Reporting systems
 
-### User groups
+## Protocol Support
 
-The UriPoint library was created for the following user groups:
+### Web & API Protocols
+- **HTTP/HTTPS**
+  - RESTful endpoints
+  - WebHooks
+  - Static content
+  - API proxying
 
-1. Distributed Systems Developers who need to:
-- Manage multiple communication protocols in one place
-- Create and manage endpoints for different services
-- Test and monitor endpoint functionality
-- Mock and simulate network services during development
-
-2. DevOps Engineers and System Administrators who:
-- Need a tool for quick endpoint creation and management
-- Want to monitor and test network connections
-- Must manage multiple protocols in production environments
-- Require persistent configuration management
-
-3. IoT Specialists working with:
-- Devices using MQTT protocol
-- Sensor data streams
-- IoT communication testing
-- Device management and monitoring
-
-4. Video Streaming Engineers who deal with:
-- Streaming protocols (RTSP, HLS, DASH)
-- Security camera systems
-- Live video transmission
-- Multi-quality streaming setups
-
-5. Backend Application Developers who:
-- Create and test REST APIs
-- Work with message queuing systems (AMQP)
-- Need endpoint mocking tools during application development
-- Manage multiple service integrations
-
-
-
-
-
-## Supported Protocols
-
-
-```ascii
-┌─────────────────────────┐  ┌─────────────────────────┐
-│     Web Protocols       │  │    Streaming Protocols  │
-├─────────────────────────┤  ├─────────────────────────┤
-│ - HTTP/HTTPS            │  │ - RTSP                  │
-│ - WebSocket (WS/WSS)    │  │ - HLS                   │
-│ - GraphQL               │  │ - DASH                  │
-└─────────────────────────┘  └─────────────────────────┘
-
-┌─────────────────────────┐  ┌─────────────────────────┐
-│    Storage Protocols    │  │   Messaging Protocols   │
-├─────────────────────────┤  ├─────────────────────────┤
-│ - Redis                 │  │ - MQTT                  │
-│ - FTP/SFTP              │  │ - AMQP                  │
-│ - File System           │  │ - SMTP                  │
-└─────────────────────────┘  └─────────────────────────┘
-
- . . . & more
-```
+- **WebSocket**
+  - Real-time communication
+  - Bi-directional data flow
+  - Connection pooling
+  - Event streaming
 
 ### Streaming Protocols
-- RTSP
-  - Security camera streams
-  - Live video feeds
-  - Transport options (TCP/UDP)
-  - Authentication support
+- **RTSP**
+  - Camera streams
+  - Media servers
+  - Stream recording
+  - Transport selection
 
-- HLS (HTTP Live Streaming)
-  - Live streaming
-  - Video on demand
+- **HLS/DASH**
   - Adaptive bitrate
-  - Multiple quality variants
-
-- DASH (Dynamic Adaptive Streaming over HTTP)
-  - Video on demand
+  - Multi-quality
   - Live streaming
-  - Multiple quality levels
-  - Multi-language support
+  - VOD support
 
-### IoT and Messaging Protocols
-- MQTT
-  - IoT device communication
-  - QoS levels
-  - Retain messages
-  - Topic-based routing
+### IoT & Messaging
+- **MQTT**
   - Device management
+  - Sensor data
+  - Command control
+  - State synchronization
 
-### Web Protocols
-- HTTP/HTTPS
-  - RESTful API endpoints
-  - Method-specific handling
-  - CORS support
-  - Static file serving
-
-### Data Store Protocols
-- Redis
-  - Caching and data storage
-  - Multiple database support
-  - Key expiration
-
-### Email Protocols
-- SMTP
-  - Email sending capabilities
-  - HTML and plain text support
-  - Template system
-  - Attachments handling
-
-### Message Queue Protocols
-- AMQP (RabbitMQ)
+- **AMQP**
   - Message queuing
-  - Exchange types
-  - Routing capabilities
-  - Durable queues
+  - Event routing
+  - Dead letter handling
+  - Queue management
 
-### Domain Name Protocols
-- DNS
-  - Forward and reverse lookups
-  - Multiple record types
-  - DNS monitoring
-  - Caching support
+## Installation & Setup
 
-### Persistent Endpoint Management
-UriPoint provides a robust CLI for creating and managing endpoints that persist across sessions.
-
-#### How It Works
-1. **Configuration Storage**
-   - Endpoints are stored in `~/.uripoint_config.yaml`
-   - Automatically saves and loads endpoint configurations
-   - Maintains state between CLI sessions
-
-2. **Endpoint Creation**
-   - Supports multiple creation methods
-   - Prevents duplicate endpoint registration
-   - Stores endpoint details with associated metadata
-   - Configurable HTTP methods
-
-3. **Live Server**
-   - Built-in HTTP server for serving endpoints
-   - Multi-port support
-   - Protocol-specific handlers
-   - HTTP method validation
-   - CORS support
-
-
-
-
-
-## Installation
-
+### Basic Installation
 ```bash
 pip install uripoint
 ```
 
-## Usage
-
-
-Service Life Cycle
-
-```ascii
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Create    │     │   Configure │     │    Serve    │
-│  Endpoint   │ ──► │   Protocol  │ ──► │  Endpoint   │
-└─────────────┘     └─────────────┘     └─────────────┘
-       │                                       │
-       │                                       │
-       ▼                                       ▼
-┌─────────────┐                         ┌─────────────┐
-│    Test     │ ◄─────────────────────  │   Monitor   │
-│  Endpoint   │                         │   Status    │
-└─────────────┘                         └─────────────┘
+### Configuration
+```yaml
+# ~/.uripoint_config.yaml
+endpoints:
+  - name: api-endpoint
+    uri: http://localhost:8080/api
+    protocol: http
+    methods: [GET, POST]
+    
+  - name: mqtt-sensor
+    uri: mqtt://broker:1883/sensors
+    protocol: mqtt
+    qos: 1
 ```
 
-## Command
+## Usage Guide
+
+### Service Lifecycle
+```ascii
+┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+│    Create    │   │  Configure   │   │    Deploy    │
+│   Endpoint   ├──►│   Protocol   ├──►│   Service    │
+└──────────────┘   └──────────────┘   └──────────────┘
+       ▲                                      │
+       │                                      ▼
+┌──────────────┐                    ┌──────────────┐
+│    Update    │◄───────────────────│   Monitor    │
+│ Configuration│                    │    Status    │
+└──────────────┘                    └──────────────┘
+```
+
+### CLI Commands
+
 
 ```bash
 uripoint [options] <command>
@@ -227,6 +212,34 @@ uripoint [options] <command>
 │ --detach   Remove endpoints                    │
 └────────────────────────────────────────────────┘
 ```
+Endpoint Management
+```bash
+uripoint create --uri http://localhost:8080/api --protocol http
+uripoint list [--format json|yaml]
+uripoint serve [--port 8000]
+uripoint monitor [--interval 5]
+uripoint remove [endpoint-name]
+```
+
+Protocol-Specific Commands
+```bash
+uripoint stream start --uri rtsp://camera:554/feed
+uripoint mqtt publish --topic sensors/temp --message "23.5"
+uripoint http test --endpoint api-endpoint
+```
+
+High Availability Setup
+```python
+from uripoint import HighAvailability
+
+ha = HighAvailability(
+    endpoints=['endpoint1', 'endpoint2'],
+    strategy='active-passive',
+    failover_timeout=30
+)
+ha.start()
+```
+
 
 
 ### Endpoint Creation Methods
@@ -554,6 +567,480 @@ wscat -c ws://localhost:8080/chat
 ```
 
 
+# UriPoint Implementation Examples
+
+## Table of Contents
+1. [Web API Examples](#web-api-examples)
+2. [Streaming Examples](#streaming-examples)
+3. [IoT Examples](#iot-examples)
+4. [Message Queue Examples](#message-queue-examples)
+5. [Storage Examples](#storage-examples)
+6. [Email Examples](#email-examples)
+7. [Multi-Protocol Examples](#multi-protocol-examples)
+
+## Web API Examples
+
+### 1. Basic REST API Endpoint
+
+```bash
+# CLI Command
+uripoint --uri http://localhost:8080/api/users \
+         --method GET POST PUT DELETE \
+         --data '{
+           "response": {"users": []},
+           "cors": true,
+           "auth": {"type": "basic"}
+         }'
+
+# Test Commands
+curl -X GET http://localhost:8080/api/users
+curl -X POST http://localhost:8080/api/users -d '{"name": "John"}'
+curl -X PUT http://localhost:8080/api/users/1 -d '{"name": "John Doe"}'
+curl -X DELETE http://localhost:8080/api/users/1
+
+# Verification
+uripoint --test http://localhost:8080/api/users --method GET
+uripoint --verify http://localhost:8080/api/users
+```
+
+```python
+# Python Implementation
+from uripoint import UriPointCLI, EndpointTest
+
+# Create endpoint
+cli = UriPointCLI()
+endpoint = cli.create_endpoint(
+    uri='http://localhost:8080/api/users',
+    data={
+        'response': {'users': []},
+        'methods': ['GET', 'POST', 'PUT', 'DELETE'],
+        'cors': True,
+        'auth': {'type': 'basic'}
+    }
+)
+
+# Test endpoint
+test = EndpointTest(endpoint)
+test.run_http_tests()
+test.verify_cors()
+test.check_methods()
+```
+
+## Streaming Examples
+
+### 2. RTSP Camera Stream
+
+```bash
+# CLI Command
+uripoint --uri rtsp://localhost:8554/camera1 \
+         --data '{
+           "stream_url": "rtsp://camera.example.com/stream1",
+           "transport": "tcp",
+           "authentication": {
+             "username": "${CAMERA_USER}",
+             "password": "${CAMERA_PASS}"
+           },
+           "options": {
+             "framerate": 30,
+             "resolution": "1920x1080"
+           }
+         }'
+
+# Test Commands
+ffplay rtsp://localhost:8554/camera1
+ffprobe -v error -show_entries stream=codec_type rtsp://localhost:8554/camera1
+
+# Verification
+uripoint --test rtsp://localhost:8554/camera1 --check-stream
+uripoint --verify rtsp://localhost:8554/camera1 --params framerate,resolution
+```
+
+```python
+# Python Implementation
+from uripoint import UriPointCLI, StreamTest
+
+# Create streaming endpoint
+cli = UriPointCLI()
+stream = cli.create_stream_endpoint(
+    uri='rtsp://localhost:8554/camera1',
+    data={
+        'stream_url': 'rtsp://camera.example.com/stream1',
+        'transport': 'tcp',
+        'authentication': {
+            'username': os.getenv('CAMERA_USER'),
+            'password': os.getenv('CAMERA_PASS')
+        },
+        'options': {
+            'framerate': 30,
+            'resolution': '1920x1080'
+        }
+    }
+)
+
+# Test stream
+test = StreamTest(stream)
+test.verify_stream_health()
+test.check_parameters()
+test.monitor_bandwidth()
+```
+
+## IoT Examples
+
+### 3. MQTT Temperature Sensor Network
+
+```bash
+# CLI Command
+uripoint --uri mqtt://localhost:1883/sensors/temperature \
+         --data '{
+           "topics": ["sensors/+/temperature"],
+           "qos": 1,
+           "retain": true,
+           "device_schema": {
+             "type": "temperature",
+             "unit": "celsius",
+             "interval": 60
+           }
+         }'
+
+# Test Commands
+mosquitto_pub -h localhost -t sensors/room1/temperature -m '{"value": 22.5}'
+mosquitto_sub -h localhost -t 'sensors/+/temperature'
+
+# Verification
+uripoint --test mqtt://localhost:1883/sensors/temperature
+uripoint --verify mqtt://localhost:1883/sensors/temperature --check-schema
+```
+
+```python
+# Python Implementation
+from uripoint import UriPointCLI, MQTTTest
+
+# Create MQTT endpoint
+cli = UriPointCLI()
+mqtt = cli.create_mqtt_endpoint(
+    uri='mqtt://localhost:1883/sensors/temperature',
+    data={
+        'topics': ['sensors/+/temperature'],
+        'qos': 1,
+        'retain': True,
+        'device_schema': {
+            'type': 'temperature',
+            'unit': 'celsius',
+            'interval': 60
+        }
+    }
+)
+
+# Test MQTT endpoint
+test = MQTTTest(mqtt)
+test.verify_connectivity()
+test.test_pub_sub()
+test.validate_messages()
+```
+
+## Message Queue Examples
+
+### 4. AMQP Order Processing Queue
+
+```bash
+# CLI Command
+uripoint --uri amqp://localhost:5672/orders \
+         --data '{
+           "exchange": "order_exchange",
+           "queues": {
+             "new_orders": {"durable": true},
+             "processed_orders": {"durable": true}
+           },
+           "routing_keys": ["order.new", "order.processed"],
+           "dlx": "order_dlx"
+         }'
+
+# Test Commands
+curl -X POST http://localhost:5672/orders/send \
+     -d '{"order_id": "123", "status": "new"}'
+curl -X GET http://localhost:5672/orders/status
+
+# Verification
+uripoint --test amqp://localhost:5672/orders --check-queues
+uripoint --verify amqp://localhost:5672/orders --check-bindings
+```
+
+```python
+# Python Implementation
+from uripoint import UriPointCLI, AMQPTest
+
+# Create AMQP endpoint
+cli = UriPointCLI()
+amqp = cli.create_amqp_endpoint(
+    uri='amqp://localhost:5672/orders',
+    data={
+        'exchange': 'order_exchange',
+        'queues': {
+            'new_orders': {'durable': True},
+            'processed_orders': {'durable': True}
+        },
+        'routing_keys': ['order.new', 'order.processed'],
+        'dlx': 'order_dlx'
+    }
+)
+
+# Test AMQP endpoint
+test = AMQPTest(amqp)
+test.verify_exchange()
+test.check_queues()
+test.test_message_flow()
+```
+
+## Storage Examples
+
+### 5. Redis Cache System
+
+```bash
+# CLI Command
+uripoint --uri redis://localhost:6379/cache \
+         --data '{
+           "database": 0,
+           "key_prefix": "app:",
+           "max_connections": 10,
+           "timeout": 5,
+           "encoding": "utf-8"
+         }'
+
+# Test Commands
+curl -X SET http://localhost:6379/cache/user:123 -d '{"name": "John"}'
+curl -X GET http://localhost:6379/cache/user:123
+redis-cli -h localhost PING
+
+# Verification
+uripoint --test redis://localhost:6379/cache --check-connection
+uripoint --verify redis://localhost:6379/cache --check-encoding
+```
+
+```python
+# Python Implementation
+from uripoint import UriPointCLI, RedisTest
+
+# Create Redis endpoint
+cli = UriPointCLI()
+redis = cli.create_redis_endpoint(
+    uri='redis://localhost:6379/cache',
+    data={
+        'database': 0,
+        'key_prefix': 'app:',
+        'max_connections': 10,
+        'timeout': 5,
+        'encoding': 'utf-8'
+    }
+)
+
+# Test Redis endpoint
+test = RedisTest(redis)
+test.verify_connectivity()
+test.test_operations()
+test.check_performance()
+```
+
+## Email Examples
+
+### 6. SMTP Email Service
+
+```bash
+# CLI Command
+uripoint --uri smtp://smtp.gmail.com:587/mail \
+         --data '{
+           "auth": {
+             "username": "${SMTP_USER}",
+             "password": "${SMTP_PASS}"
+           },
+           "tls": true,
+           "templates": {
+             "welcome": {"path": "templates/welcome.html"},
+             "reset": {"path": "templates/reset.html"}
+           }
+         }'
+
+# Test Commands
+curl -X POST http://localhost:587/mail/send \
+     -d '{
+       "to": "user@example.com",
+       "template": "welcome",
+       "data": {"name": "John"}
+     }'
+
+# Verification
+uripoint --test smtp://smtp.gmail.com:587/mail --check-auth
+uripoint --verify smtp://smtp.gmail.com:587/mail --check-templates
+```
+
+```python
+# Python Implementation
+from uripoint import UriPointCLI, SMTPTest
+
+# Create SMTP endpoint
+cli = UriPointCLI()
+smtp = cli.create_smtp_endpoint(
+    uri='smtp://smtp.gmail.com:587/mail',
+    data={
+        'auth': {
+            'username': os.getenv('SMTP_USER'),
+            'password': os.getenv('SMTP_PASS')
+        },
+        'tls': True,
+        'templates': {
+            'welcome': {'path': 'templates/welcome.html'},
+            'reset': {'path': 'templates/reset.html'}
+        }
+    }
+)
+
+# Test SMTP endpoint
+test = SMTPTest(smtp)
+test.verify_connection()
+test.test_templates()
+test.check_delivery()
+```
+
+## Multi-Protocol Examples
+
+### 7. Full IoT Monitoring System
+
+```bash
+# CLI Commands
+# Create MQTT endpoint for sensor data
+uripoint --uri mqtt://localhost:1883/sensors \
+         --data '{
+           "topics": ["sensors/#"],
+           "qos": 1
+         }'
+
+# Create Redis endpoint for data storage
+uripoint --uri redis://localhost:6379/sensor-data \
+         --data '{
+           "database": 1,
+           "expire": 3600
+         }'
+
+# Create HTTP API endpoint
+uripoint --uri http://localhost:8080/api/sensors \
+         --method GET POST \
+         --data '{
+           "cache": "redis://localhost:6379/sensor-data",
+           "mqtt": "mqtt://localhost:1883/sensors"
+         }'
+
+# Test Commands
+# Test MQTT data flow
+mosquitto_pub -t sensors/temp1 -m '{"value": 24.5}'
+
+# Check Redis storage
+redis-cli -h localhost -n 1 GET sensor:temp1
+
+# Verify HTTP API
+curl http://localhost:8080/api/sensors/temp1
+
+# Verification
+uripoint --test-suite iot-monitoring --verify-all
+```
+
+```python
+# Python Implementation
+from uripoint import UriPointCLI, SystemTest
+
+# Create system endpoints
+cli = UriPointCLI()
+
+# MQTT endpoint
+mqtt = cli.create_mqtt_endpoint(
+    uri='mqtt://localhost:1883/sensors',
+    data={
+        'topics': ['sensors/#'],
+        'qos': 1
+    }
+)
+
+# Redis endpoint
+redis = cli.create_redis_endpoint(
+    uri='redis://localhost:6379/sensor-data',
+    data={
+        'database': 1,
+        'expire': 3600
+    }
+)
+
+# HTTP API endpoint
+api = cli.create_endpoint(
+    uri='http://localhost:8080/api/sensors',
+    data={
+        'methods': ['GET', 'POST'],
+        'cache': 'redis://localhost:6379/sensor-data',
+        'mqtt': 'mqtt://localhost:1883/sensors'
+    }
+)
+
+# Create system test
+test = SystemTest([mqtt, redis, api])
+test.verify_integration()
+test.test_data_flow()
+test.check_performance()
+```
+
+## Testing Framework Examples
+
+### Common Test Cases
+
+```python
+# Basic endpoint test
+test = EndpointTest(endpoint)
+test.run()
+
+# Protocol-specific tests
+test.verify_protocol()
+test.check_security()
+test.validate_performance()
+
+# Integration tests
+test.verify_dependencies()
+test.check_data_flow()
+test.test_failover()
+
+# Load tests
+test.concurrent_access(num_clients=100)
+test.sustained_load(duration=300)
+test.peak_performance()
+
+# Chaos tests
+test.network_partition()
+test.process_failure()
+test.data_corruption()
+```
+
+### Test Configuration
+
+```yaml
+# test_config.yaml
+tests:
+  performance:
+    concurrent_users: 100
+    duration: 300
+    thresholds:
+      latency_p95: 200
+      error_rate: 0.01
+  
+  integration:
+    dependencies:
+      - redis
+      - mqtt
+      - http
+    timeout: 30
+    
+  chaos:
+    scenarios:
+      - network_partition
+      - process_crash
+      - disk_full
+    duration: 600
+```
+
 
 See [examples/protocol_examples/](examples/protocol_examples/) for more comprehensive examples:
 - [streaming_example.py](examples/protocol_examples/streaming_example.py): RTSP, HLS, and DASH streaming
@@ -650,3 +1137,17 @@ This project is licensed under the terms of the LICENSE file in the project root
 See [CHANGELOG.md](CHANGELOG.md) for version history and updates.
 
 
+
+## Contributing
+
+We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details on:
+- Code style
+- Pull request process
+- Development setup
+- Testing requirements
+
+## Support
+
+- **Support**: Community support via GitHub Issues
+- **Documentation**: Full docs at [docs.uripoint.com](https://docs.uripoint.com)
+- **Updates**: See [CHANGELOG.md](CHANGELOG.md)

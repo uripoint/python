@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.9.2] - Documentation Enhancement
+
+### Added
+- Update documentation points
 
 ## [1.9.1] - Test Framework Enhancement
 
