@@ -552,17 +552,6 @@ wscat -c ws://localhost:8080/chat
 ```
 
 
-# UriPoint Implementation Examples
-
-## Table of Contents
-1. [Web API Examples](#web-api-examples)
-2. [Streaming Examples](#streaming-examples)
-3. [IoT Examples](#iot-examples)
-4. [Message Queue Examples](#message-queue-examples)
-5. [Storage Examples](#storage-examples)
-6. [Email Examples](#email-examples)
-7. [Multi-Protocol Examples](#multi-protocol-examples)
-
 ## Web API Examples
 
 ### 1. Basic REST API Endpoint
