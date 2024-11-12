@@ -100,8 +100,6 @@ Service Life Cycle
 ```bash
 uripoint [options] <command>
 ```
-
-Command
 ```bash
 ┌────────────────────────────────────────────────────┐
 │ --uri      Define endpoint URI                     │

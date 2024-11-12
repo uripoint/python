@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.7.0] - Extended Protocol Support
+### Added
+- gRPC protocol support with streaming
+- GraphQL API with subscriptions
+- CoAP for IoT devices
+- LDAP directory services
+- XMPP messaging protocol
+- WebRTC communication
+
+### Implemented
+- gRPC service definitions and streaming
+- GraphQL schema and resolvers
+- CoAP resource handling
+- LDAP directory operations
+- XMPP chat and presence
+- WebRTC signaling and media
+
+### Improvements
+- Enhanced protocol documentation
+- More comprehensive examples
+- Protocol-specific testing
+- Better error handling
+
 ## [1.6.0] - Comprehensive Security Implementation
 ### Added
 - Input validation system
@@ -23,28 +46,5 @@
 - Better security logging
 - Automated security testing
 - Protocol security validation
-
-## [1.5.0] - Comprehensive Example Documentation
-### Added
-- Dual Python and curl examples for all protocols
-- Command-line testing instructions
-- Protocol-specific testing tools
-- Real-world usage patterns
-
-### Implemented
-- HTTP/REST API examples with CRUD
-- MQTT IoT device examples
-- Redis cache operation examples
-- SMTP email handling examples
-- RTSP/HLS streaming examples
-- AMQP message queue examples
-- DNS service examples
-- WebSocket chat examples
-
-### Improvements
-- Better documentation structure
-- More practical examples
-- Testing tool integration
-- Command-line usage clarity
 
 [Previous changelog entries remain unchanged...]

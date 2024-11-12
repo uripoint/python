@@ -1,5 +1,9 @@
 # Project TODOs
- 
+do more tests from TODO and update CHANGELOG and README.md
+create examples with dockerfile and docker compose for many different protocols togheter
+each uripoint endpoint in separated docker
+create usa cases for all that examples and answer question why it is interestiong
+
 ## Development
 - [x] Set up basic project structure
 - [x] Create comprehensive routing system
