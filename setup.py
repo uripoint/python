@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="uripoint",
-    version="1.8.0",
+    version="1.9.0",
     description="A flexible Python library for endpoint management and URI processing",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
@@ -28,7 +28,7 @@ setup(
             'pytest>=7.0.0',
             'pytest-cov>=4.0.0',
             'black>=23.0.0',
-            'mypy>=1.8.0',
+            'mypy>=1.9.0',
             'flake8>=6.0.0',
             'isort>=5.12.0',
             'coverage>=7.2.0'
