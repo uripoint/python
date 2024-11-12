@@ -1,20 +1,4 @@
-# UriPoint
-
 # UriPoint - Universal Network Endpoint Management
-
-## Table of Contents
-1. [Overview](#overview)
-2. [Key Features](#key-features)
-3. [Target Audience](#target-audience)
-4. [Architecture](#architecture)
-5. [Protocol Support](#protocol-support)
-6. [Installation & Setup](#installation--setup)
-7. [Usage Guide](#usage-guide)
-8. [Protocol Examples](#protocol-examples)
-9. [Testing Framework](#testing-framework)
-10. [Advanced Topics](#advanced-topics)
-
-## Overview
 
 UriPoint is a comprehensive Python library designed for unified network endpoint management across multiple protocols. It simplifies the creation, management, and monitoring of network endpoints through a single, cohesive interface.
 
