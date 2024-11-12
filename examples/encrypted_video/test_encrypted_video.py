@@ -9,11 +9,12 @@ import base64
 from pathlib import Path
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
+from config import ENDPOINTS, KEY_DIR, TEMP_DIR
 
 class StreamTester:
     def __init__(self):
-        self.key_dir = Path(__file__).parent / 'keys'
-        self.temp_dir = Path(__file__).parent / 'temp'
+        self.key_dir = Path(__file__).parent / KEY_DIR
+        self.temp_dir = Path(__file__).parent / TEMP_DIR
         self.temp_dir.mkdir(exist_ok=True)
 
     def load_key(self, key_file):
@@ -26,7 +27,7 @@ class StreamTester:
         print("\nTesting HLS encryption...")
         
         # Get master playlist
-        response = requests.get('http://localhost:8000/encrypted/hls/master.m3u8')
+        response = requests.get(ENDPOINTS['hls_master'])
         assert response.status_code == 200, "Failed to get HLS master playlist"
         master_content = response.text
         print("Master playlist:", master_content)
@@ -53,7 +54,7 @@ class StreamTester:
         print("\nTesting DASH encryption...")
         
         # Get manifest
-        response = requests.get('http://localhost:8000/encrypted/dash/manifest.mpd')
+        response = requests.get(ENDPOINTS['dash_manifest'])
         assert response.status_code == 200, "Failed to get DASH manifest"
         manifest = response.text
         print("DASH manifest:", manifest)
@@ -67,7 +68,7 @@ class StreamTester:
             'kids': [manifest.split('default_KID="')[1].split('"')[0]]
         }
         license_response = requests.post(
-            'http://localhost:8000/drm/license',
+            ENDPOINTS['drm_license'],
             json=license_data
         )
         assert license_response.status_code == 200, "Failed to get license"
@@ -85,7 +86,7 @@ class StreamTester:
         print("\nTesting key rotation...")
         
         # Get key management info
-        response = requests.get('http://localhost:8000/keys/manage')
+        response = requests.get(ENDPOINTS['key_manage'])
         assert response.status_code == 200, "Failed to get key management info"
         key_info = response.json()
         

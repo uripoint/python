@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  encrypted-video:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"  # HTTP port
+      - "8083:8083"  # URIPoint port
+    volumes:
+      - ./keys:/app/keys  # Persist encryption keys
+      - ./temp:/app/temp  # Persist temporary files
+    environment:
+      - URIPOINT_HOST=${URIPOINT_HOST}
+      - URIPOINT_PORT=${URIPOINT_PORT}
+      - HTTP_PORT=${HTTP_PORT}
+      - FFMPEG_VIDEO_SIZE=${FFMPEG_VIDEO_SIZE}
+      - FFMPEG_FRAME_RATE=${FFMPEG_FRAME_RATE}
+      - FFMPEG_VIDEO_BITRATE=${FFMPEG_VIDEO_BITRATE}
+      - FFMPEG_AUDIO_BITRATE=${FFMPEG_AUDIO_BITRATE}
+      - FFMPEG_HLS_TIME=${FFMPEG_HLS_TIME}
+      - FFMPEG_HLS_LIST_SIZE=${FFMPEG_HLS_LIST_SIZE}
+      - KEY_ROTATION_INTERVAL=${KEY_ROTATION_INTERVAL}
+    restart: unless-stopped

@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.9.0] - Extended Testing Framework
+
+### Added
+- Comprehensive test suite expansion:
+  - Performance benchmarks
+    - Endpoint creation performance
+    - Concurrent access testing
+    - Memory usage monitoring
+    - Protocol handler performance
+  - Integration tests
+    - Component interaction testing
+    - Multi-protocol integration
+    - Process-endpoint integration
+    - Error propagation testing
+  - Chaos testing
+    - Random endpoint chaos
+    - Process management chaos
+    - Network chaos simulation
+    - Data input chaos testing
+
+### Improvements
+- Enhanced test coverage
+- System stability validation
+- Performance metrics
+- Error handling verification
+
 ## [1.8.0] - Extended Examples
 
 ### Added

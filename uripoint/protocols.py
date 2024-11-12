@@ -4,6 +4,7 @@ Protocol handlers for UriPoint
 from typing import Dict, Any, Optional
 from abc import ABC, abstractmethod
 import json
+import subprocess
 
 class ProtocolHandler(ABC):
     @abstractmethod
@@ -18,7 +19,27 @@ class ProtocolHandler(ABC):
         """Handle incoming request for the endpoint"""
         if not endpoint_info or 'config' not in endpoint_info:
             raise KeyError("Invalid endpoint info: missing configuration")
-        return json.dumps(endpoint_info.get('config', {}).get('response', {}))
+        
+        config = endpoint_info.get('config', {})
+        
+        # If there's a command, execute it and return its output
+        if 'command' in config:
+            try:
+                result = subprocess.run(
+                    config['command'],
+                    shell=True,
+                    capture_output=True,
+                    text=True
+                )
+                if result.returncode == 0:
+                    return result.stdout
+                else:
+                    raise RuntimeError(f"Command failed: {result.stderr}")
+            except Exception as e:
+                raise RuntimeError(f"Failed to execute command: {str(e)}")
+        
+        # Otherwise return the static response
+        return json.dumps(config.get('response', {}))
 
 class HTTPHandler(ProtocolHandler):
     def validate_config(self, config: Dict[str, Any]) -> bool:

@@ -1,5 +1,6 @@
 # UriPoint
 
+
 UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols. It provides a unified interface for handling various communication protocols, including streaming protocols (RTSP, HLS, DASH) and IoT protocols (MQTT).
 
 
@@ -144,6 +145,74 @@ uripoint --detach "http://localhost:9000/api/hello" "http://localhost:9001/metri
 # Detach all endpoints
 uripoint --detach
 ```
+
+
+
+## Testing Framework
+
+UriPoint includes a comprehensive testing framework that ensures reliability and performance across all components:
+
+```ascii
+┌─────────────────────────┐  ┌─────────────────────────┐
+│   Performance Tests     │  │   Integration Tests     │
+├─────────────────────────┤  ├─────────────────────────┤
+│ - Endpoint Creation     │  │ - Component Interaction │
+│ - Concurrent Access     │  │ - Multi-Protocol        │
+│ - Memory Usage         │  │ - Process Management    │
+│ - Protocol Handlers    │  │ - Error Propagation     │
+└─────────────────────────┘  └─────────────────────────┘
+
+┌─────────────────────────┐  ┌─────────────────────────┐
+│     Chaos Tests        │  │    Protocol Tests       │
+├─────────────────────────┤  ├─────────────────────────┤
+│ - Random Operations    │  │ - Protocol Validation   │
+│ - Process Chaos        │  │ - Handler Behavior      │
+│ - Network Simulation   │  │ - Configuration         │
+│ - Data Input Chaos     │  │ - Error Handling       │
+└─────────────────────────┘  └─────────────────────────┘
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest tests/
+
+# Run specific test categories
+pytest tests/test_protocols.py
+pytest tests/test_performance.py
+pytest tests/test_integration.py
+pytest tests/test_chaos.py
+
+# Run with coverage report
+pytest --cov=uripoint tests/
+```
+
+### Test Categories
+
+1. **Performance Tests**
+   - Endpoint creation benchmarks
+   - Concurrent access testing
+   - Memory usage monitoring
+   - Protocol handler performance
+
+2. **Integration Tests**
+   - Component interaction verification
+   - Multi-protocol integration
+   - Process-endpoint integration
+   - Error propagation testing
+
+3. **Chaos Tests**
+   - Random endpoint operations
+   - Process management chaos
+   - Network chaos simulation
+   - Data input chaos testing
+
+4. **Protocol-Specific Tests**
+   - Protocol handler validation
+   - Configuration verification
+   - Error handling
+   - Protocol behavior testing
 
 
 ## Protocol Examples

@@ -1,14 +1,16 @@
 #!/bin/bash
+kill $(lsof -t -i:8080)
+kill $(lsof -t -i:8081)
+kill $(lsof -t -i:8082)
+kill $(lsof -t -i:8083)
+kill $(lsof -t -i:8084)
+sleep 4
 
 # Colors for output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
-
-
-kill $(lsof -t -i:8080)
-kill $(lsof -t -i:8082)
 
 # Function to print colored status
 print_status() {
@@ -22,6 +24,32 @@ print_success() {
 print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
+
+# Import Python config values
+CONFIG_SCRIPT="
+import sys
+sys.path.append('.')
+try:
+    import config
+    print(f'HOSTNAME={config.HOSTNAME}')
+    print(f'URIPOINT_PORT={config.URIPOINT_PORT}')
+    print(f'HTTP_PORT={config.HTTP_PORT}')
+    print(f'KEY_DIR={config.KEY_DIR}')
+    print(f'TEMP_DIR={config.TEMP_DIR}')
+except Exception as e:
+    print(f'Error importing config: {str(e)}', file=sys.stderr)
+    sys.exit(1)
+"
+
+eval "$(python3 -c "$CONFIG_SCRIPT")" || {
+    print_error "Failed to import configuration"
+    exit 1
+}
+
+# Activate virtual environment if it exists
+if [ -d "venv" ]; then
+    source venv/bin/activate
+fi
 
 # Check dependencies
 print_status "Checking dependencies..."
@@ -46,7 +74,7 @@ print_status "Setting up encrypted video endpoints..."
 
 # Start the server
 print_status "Starting UriPoint server..."
-uripoint --serve &
+uripoint --serve --port $URIPOINT_PORT &
 SERVER_PID=$!
 
 # Wait for server to start
@@ -62,20 +90,15 @@ if [ $TEST_STATUS -eq 0 ]; then
     
     # Start HTTP server for player
     print_status "Starting HTTP server for encrypted player..."
-    HTTP_PORT=8080
-    while nc -z localhost $HTTP_PORT 2>/dev/null; do
-        HTTP_PORT=$((HTTP_PORT + 1))
-    done
-    
     python3 -m http.server $HTTP_PORT --directory "$(dirname "$0")" &
     HTTP_PID=$!
     
     print_success "Demo is running!"
-    print_status "Access the encrypted player at: https://localhost:$HTTP_PORT/encrypted_player.html"
+    print_status "Access the encrypted player at: http://$HOSTNAME:$HTTP_PORT/encrypted_player.html"
     print_status "Available streams:"
-    echo "- Encrypted HLS: https://localhost:8080/encrypted/hls/master.m3u8"
-    echo "- Encrypted DASH: https://localhost:8080/encrypted/dash/manifest.mpd"
-    echo "- DRM License Server: https://localhost:8080/drm/license"
+    echo "- Encrypted HLS: http://$HOSTNAME:$URIPOINT_PORT/encrypted/hls/master.m3u8"
+    echo "- Encrypted DASH: http://$HOSTNAME:$URIPOINT_PORT/encrypted/dash/manifest.mpd"
+    echo "- DRM License Server: http://$HOSTNAME:$URIPOINT_PORT/drm/license"
     print_status "Press Ctrl+C to stop the demo"
     
     # Save PIDs for cleanup
@@ -101,13 +124,13 @@ cleanup() {
     fi
     
     # Clean up encryption keys
-    if [ -d "$(dirname "$0")/keys" ]; then
-        rm -rf "$(dirname "$0")/keys"
+    if [ -d "$(dirname "$0")/$KEY_DIR" ]; then
+        rm -rf "$(dirname "$0")/$KEY_DIR"
     fi
     
     # Clean up temporary files
-    if [ -d "$(dirname "$0")/temp" ]; then
-        rm -rf "$(dirname "$0")/temp"
+    if [ -d "$(dirname "$0")/$TEMP_DIR" ]; then
+        rm -rf "$(dirname "$0")/$TEMP_DIR"
     fi
     
     print_success "Cleanup complete"
@@ -119,7 +142,7 @@ trap cleanup EXIT
 # Monitor key rotation
 monitor_keys() {
     while true; do
-        curl -s https://localhost:8080/keys/manage | jq .
+        curl -s http://$HOSTNAME:$URIPOINT_PORT/keys/manage | jq .
         sleep 5
     done
 }
