@@ -1,29 +1,165 @@
 # UriPoint
 
-
 UriPoint is a flexible Python library for creating, managing, and interacting with network endpoints across multiple protocols. It provides a unified interface for handling various communication protocols, including streaming protocols (RTSP, HLS, DASH) and IoT protocols (MQTT).
+
+## UriPoint ecoSystem      
+The library was designed as a versatile tool for IT professionals working with various network protocols who need a simple and unified way to manage endpoints in their systems.
+It's particularly useful for teams that need to handle multiple protocols and services within a single toolset, 
+making it easier to maintain and monitor network communications across different platforms and protocols.
+
+```ascii
+┌───────────────────────────────────────────────────────────┐
+│                      UriPoint System                      │
+├──────────────────┬───────────────────┬────────────────────┤
+│   CLI Interface  │ Protocol Handlers │  Endpoint Manager  │
+├──────────────────┴───────────────────┴────────────────────┤
+│                                                           │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐      │
+│  │   HTTP(S)   │   │    MQTT     │   │    RTSP     │      │
+│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │      │
+│  └─────────────┘   └─────────────┘   └─────────────┘      │
+│                                                           │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐      │
+│  │   Redis     │   │    SMTP     │   │    AMQP     │      │
+│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │      │
+│  └─────────────┘   └─────────────┘   └─────────────┘      │
+│                                                           │
+└───────────────────────────────────────────────────────────┘
+```
+UriPoint provides a unified interface for handling various communication protocols, including streaming protocols (RTSP, HLS, DASH) and IoT protocols (MQTT), including the CLI interface, protocol handlers, and endpoint manager, can be used to create and manage endpoints across multiple protocols,
+making it a versatile tool for network communication.
+
+
+### Key features
+
+- Unified interface - single interface for multiple protocols
+- CLI interface - quick configuration without coding
+- Persistent configuration - configuration retention between sessions
+- Built-in testing framework - comprehensive testing capabilities
+- Multiple protocol support - handling various communication protocols
+- Monitoring capabilities - endpoint monitoring and status tracking
+
+### User groups
+
+The UriPoint library was created for the following user groups:
+
+1. Distributed Systems Developers who need to:
+- Manage multiple communication protocols in one place
+- Create and manage endpoints for different services
+- Test and monitor endpoint functionality
+- Mock and simulate network services during development
+
+2. DevOps Engineers and System Administrators who:
+- Need a tool for quick endpoint creation and management
+- Want to monitor and test network connections
+- Must manage multiple protocols in production environments
+- Require persistent configuration management
+
+3. IoT Specialists working with:
+- Devices using MQTT protocol
+- Sensor data streams
+- IoT communication testing
+- Device management and monitoring
+
+4. Video Streaming Engineers who deal with:
+- Streaming protocols (RTSP, HLS, DASH)
+- Security camera systems
+- Live video transmission
+- Multi-quality streaming setups
+
+5. Backend Application Developers who:
+- Create and test REST APIs
+- Work with message queuing systems (AMQP)
+- Need endpoint mocking tools during application development
+- Manage multiple service integrations
+
+
+
+
+
+## Supported Protocols
 
 
 ```ascii
-┌─────────────────────────────────────────────────────────────┐
-│                      UriPoint System                        │
-├──────────────────┬───────────────────┬──────────────────────┤
-│   CLI Interface  │ Protocol Handlers │   Endpoint Manager   │
-├──────────────────┴───────────────────┴──────────────────────┤
-│                                                             │
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
-│  │   HTTP(S)   │   │    MQTT     │   │    RTSP     │        │
-│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │        │
-│  └─────────────┘   └─────────────┘   └─────────────┘        │
-│                                                             │
-│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐        │
-│  │   Redis     │   │    SMTP     │   │    AMQP     │        │
-│  │  Endpoints  │   │  Endpoints  │   │  Endpoints  │        │
-│  └─────────────┘   └─────────────┘   └─────────────┘        │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────┐  ┌─────────────────────────┐
+│     Web Protocols       │  │    Streaming Protocols  │
+├─────────────────────────┤  ├─────────────────────────┤
+│ - HTTP/HTTPS            │  │ - RTSP                  │
+│ - WebSocket (WS/WSS)    │  │ - HLS                   │
+│ - GraphQL               │  │ - DASH                  │
+└─────────────────────────┘  └─────────────────────────┘
+
+┌─────────────────────────┐  ┌─────────────────────────┐
+│    Storage Protocols    │  │   Messaging Protocols   │
+├─────────────────────────┤  ├─────────────────────────┤
+│ - Redis                 │  │ - MQTT                  │
+│ - FTP/SFTP              │  │ - AMQP                  │
+│ - File System           │  │ - SMTP                  │
+└─────────────────────────┘  └─────────────────────────┘
+
+ . . . & more
 ```
 
+### Streaming Protocols
+- RTSP
+  - Security camera streams
+  - Live video feeds
+  - Transport options (TCP/UDP)
+  - Authentication support
+
+- HLS (HTTP Live Streaming)
+  - Live streaming
+  - Video on demand
+  - Adaptive bitrate
+  - Multiple quality variants
+
+- DASH (Dynamic Adaptive Streaming over HTTP)
+  - Video on demand
+  - Live streaming
+  - Multiple quality levels
+  - Multi-language support
+
+### IoT and Messaging Protocols
+- MQTT
+  - IoT device communication
+  - QoS levels
+  - Retain messages
+  - Topic-based routing
+  - Device management
+
+### Web Protocols
+- HTTP/HTTPS
+  - RESTful API endpoints
+  - Method-specific handling
+  - CORS support
+  - Static file serving
+
+### Data Store Protocols
+- Redis
+  - Caching and data storage
+  - Multiple database support
+  - Key expiration
+
+### Email Protocols
+- SMTP
+  - Email sending capabilities
+  - HTML and plain text support
+  - Template system
+  - Attachments handling
+
+### Message Queue Protocols
+- AMQP (RabbitMQ)
+  - Message queuing
+  - Exchange types
+  - Routing capabilities
+  - Durable queues
+
+### Domain Name Protocols
+- DNS
+  - Forward and reverse lookups
+  - Multiple record types
+  - DNS monitoring
+  - Caching support
 
 ### Persistent Endpoint Management
 UriPoint provides a robust CLI for creating and managing endpoints that persist across sessions.
@@ -48,27 +184,7 @@ UriPoint provides a robust CLI for creating and managing endpoints that persist 
    - CORS support
 
 
-## Protocol Support
 
-```ascii
-┌─────────────────────────┐  ┌─────────────────────────┐
-│     Web Protocols       │  │    Streaming Protocols  │
-├─────────────────────────┤  ├─────────────────────────┤
-│ - HTTP/HTTPS            │  │ - RTSP                  │
-│ - WebSocket (WS/WSS)    │  │ - HLS                   │
-│ - GraphQL               │  │ - DASH                  │
-└─────────────────────────┘  └─────────────────────────┘
-
-┌─────────────────────────┐  ┌─────────────────────────┐
-│    Storage Protocols    │  │   Messaging Protocols   │
-├─────────────────────────┤  ├─────────────────────────┤
-│ - Redis                 │  │ - MQTT                  │
-│ - FTP/SFTP              │  │ - AMQP                  │
-│ - File System           │  │ - SMTP                  │
-└─────────────────────────┘  └─────────────────────────┘
-
- . . . & more
-```
 
 
 ## Installation
@@ -102,14 +218,14 @@ Service Life Cycle
 uripoint [options] <command>
 ```
 ```bash
-┌────────────────────────────────────────────────────┐
-│ --uri      Define endpoint URI                     │
-│ --method   Specify HTTP methods                    │
-│ --data     Configure endpoint data                 │
-│ --serve    Start serving endpoints                 │
-│ --list     Show configured endpoints               │
-│ --detach   Remove endpoints                        │
-└────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────┐
+│ --uri      Define endpoint URI                 │
+│ --method   Specify HTTP methods                │
+│ --data     Configure endpoint data             │
+│ --serve    Start serving endpoints             │
+│ --list     Show configured endpoints           │
+│ --detach   Remove endpoints                    │
+└────────────────────────────────────────────────┘
 ```
 
 
@@ -146,73 +262,6 @@ uripoint --detach "http://localhost:9000/api/hello" "http://localhost:9001/metri
 uripoint --detach
 ```
 
-
-
-## Testing Framework
-
-UriPoint includes a comprehensive testing framework that ensures reliability and performance across all components:
-
-```ascii
-┌─────────────────────────┐  ┌─────────────────────────┐
-│   Performance Tests     │  │   Integration Tests     │
-├─────────────────────────┤  ├─────────────────────────┤
-│ - Endpoint Creation     │  │ - Component Interaction │
-│ - Concurrent Access     │  │ - Multi-Protocol        │
-│ - Memory Usage         │  │ - Process Management    │
-│ - Protocol Handlers    │  │ - Error Propagation     │
-└─────────────────────────┘  └─────────────────────────┘
-
-┌─────────────────────────┐  ┌─────────────────────────┐
-│     Chaos Tests        │  │    Protocol Tests       │
-├─────────────────────────┤  ├─────────────────────────┤
-│ - Random Operations    │  │ - Protocol Validation   │
-│ - Process Chaos        │  │ - Handler Behavior      │
-│ - Network Simulation   │  │ - Configuration         │
-│ - Data Input Chaos     │  │ - Error Handling       │
-└─────────────────────────┘  └─────────────────────────┘
-```
-
-### Running Tests
-
-```bash
-# Run all tests
-pytest tests/
-
-# Run specific test categories
-pytest tests/test_protocols.py
-pytest tests/test_performance.py
-pytest tests/test_integration.py
-pytest tests/test_chaos.py
-
-# Run with coverage report
-pytest --cov=uripoint tests/
-```
-
-### Test Categories
-
-1. **Performance Tests**
-   - Endpoint creation benchmarks
-   - Concurrent access testing
-   - Memory usage monitoring
-   - Protocol handler performance
-
-2. **Integration Tests**
-   - Component interaction verification
-   - Multi-protocol integration
-   - Process-endpoint integration
-   - Error propagation testing
-
-3. **Chaos Tests**
-   - Random endpoint operations
-   - Process management chaos
-   - Network chaos simulation
-   - Data input chaos testing
-
-4. **Protocol-Specific Tests**
-   - Protocol handler validation
-   - Configuration verification
-   - Error handling
-   - Protocol behavior testing
 
 
 ## Protocol Examples
@@ -514,73 +563,82 @@ See [examples/protocol_examples/](examples/protocol_examples/) for more comprehe
 - [amqp_example.py](examples/protocol_examples/amqp_example.py): Message queuing
 - [dns_example.py](examples/protocol_examples/dns_example.py): Domain resolution
 
-## Supported Protocols
-
-### Streaming Protocols
-- RTSP
-  - Security camera streams
-  - Live video feeds
-  - Transport options (TCP/UDP)
-  - Authentication support
-
-- HLS (HTTP Live Streaming)
-  - Live streaming
-  - Video on demand
-  - Adaptive bitrate
-  - Multiple quality variants
-
-- DASH (Dynamic Adaptive Streaming over HTTP)
-  - Video on demand
-  - Live streaming
-  - Multiple quality levels
-  - Multi-language support
-
-### IoT and Messaging Protocols
-- MQTT
-  - IoT device communication
-  - QoS levels
-  - Retain messages
-  - Topic-based routing
-  - Device management
-
-### Web Protocols
-- HTTP/HTTPS
-  - RESTful API endpoints
-  - Method-specific handling
-  - CORS support
-  - Static file serving
-
-### Data Store Protocols
-- Redis
-  - Caching and data storage
-  - Multiple database support
-  - Key expiration
-
-### Email Protocols
-- SMTP
-  - Email sending capabilities
-  - HTML and plain text support
-  - Template system
-  - Attachments handling
-
-### Message Queue Protocols
-- AMQP (RabbitMQ)
-  - Message queuing
-  - Exchange types
-  - Routing capabilities
-  - Durable queues
-
-### Domain Name Protocols
-- DNS
-  - Forward and reverse lookups
-  - Multiple record types
-  - DNS monitoring
-  - Caching support
 
 ## Configuration File Location
 - **Path**: `~/.uripoint_config.yaml`
 - **Format**: YAML
 - **Contents**: List of endpoint configurations
+
+
+
+
+## Testing Framework
+
+UriPoint includes a comprehensive testing framework that ensures reliability and performance across all components:
+
+```ascii
+┌────────────────────────┐  ┌─────────────────────────┐
+│   Performance Tests    │  │   Integration Tests     │
+├────────────────────────┤  ├─────────────────────────┤
+│ - Endpoint Creation    │  │ - Component Interaction │
+│ - Concurrent Access    │  │ - Multi-Protocol        │
+│ - Memory Usage         │  │ - Process Management    │
+│ - Protocol Handlers    │  │ - Error Propagation     │
+└────────────────────────┘  └─────────────────────────┘
+
+┌────────────────────────┐  ┌─────────────────────────┐
+│     Chaos Tests        │  │    Protocol Tests       │
+├────────────────────────┤  ├─────────────────────────┤
+│ - Random Operations    │  │ - Protocol Validation   │
+│ - Process Chaos        │  │ - Handler Behavior      │
+│ - Network Simulation   │  │ - Configuration         │
+│ - Data Input Chaos     │  │ - Error Handling        │
+└────────────────────────┘  └─────────────────────────┘
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest tests/
+
+# Run specific test categories
+pytest tests/test_protocols.py
+pytest tests/test_performance.py
+pytest tests/test_integration.py
+pytest tests/test_chaos.py
+
+# Run with coverage report
+pytest --cov=uripoint tests/
+```
+
+### Test Categories
+
+1. **Performance Tests**
+   - Endpoint creation benchmarks
+   - Concurrent access testing
+   - Memory usage monitoring
+   - Protocol handler performance
+
+2. **Integration Tests**
+   - Component interaction verification
+   - Multi-protocol integration
+   - Process-endpoint integration
+   - Error propagation testing
+
+3. **Chaos Tests**
+   - Random endpoint operations
+   - Process management chaos
+   - Network chaos simulation
+   - Data input chaos testing
+
+4. **Protocol-Specific Tests**
+   - Protocol handler validation
+   - Configuration verification
+   - Error handling
+   - Protocol behavior testing
+
+
 
 ## Contributing
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md)

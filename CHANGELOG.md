@@ -1,5 +1,11 @@
 # Changelog
 
+
+## [1.9.1] - Test Framework Enhancement
+
+### Added
+- Documentation points
+  
 ## [1.9.0] - Extended Testing Framework
 
 ### Added
